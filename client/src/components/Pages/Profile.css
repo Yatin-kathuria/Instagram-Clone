@@ -1,0 +1,32 @@
+.profile {
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.profile_info {
+  display: flex;
+  justify-content: space-around;
+  margin: 18px 0px;
+  border-bottom: 1px solid black;
+}
+
+.profile_image {
+  width: "160px";
+  height: "160px";
+  border-radius: "80px";
+}
+
+.profile_data {
+  display: flex;
+  justify-content: space-between;
+  width: 108%;
+}
+.gallary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.item {
+  width: 33%;
+}
