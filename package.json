@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "14.x"
+  },
+
   "scripts": {
     "start": "node app.js",
     "heroku-postbuild":"NPM CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
