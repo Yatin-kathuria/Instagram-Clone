@@ -41,7 +41,7 @@ function SignUp() {
       return;
     }
 
-    fetch("/signup", {
+    fetch("http://localhost:5000/signup", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

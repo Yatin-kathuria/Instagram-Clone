@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import M from "materialize-css";
-import { useGlobalContext } from "../../context";
 
-function SignIn() {
-  const { dispatch } = useGlobalContext();
-
+function Reset() {
   const history = useHistory();
-
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const PostData = (e) => {
+  const ResetPassword = (e) => {
     e.preventDefault();
     const isValidEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
       email
@@ -21,13 +16,12 @@ function SignIn() {
       return;
     }
 
-    fetch("http://localhost:5000/signin", {
+    fetch("http://localhost:5000/resetpassword", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        password,
         email,
       }),
     })
@@ -39,14 +33,11 @@ function SignIn() {
             M.toast({ html: data.error, classes: "red darken-3" });
           }
         } else {
-          localStorage.setItem("jwt", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          dispatch({ type: "USER", payload: data.user });
           M.toast({
-            html: "signed in successfully",
+            html: data.message,
             classes: "green darken-3",
           });
-          history.push("/");
+          history.push("/signin");
         }
       })
       .catch((error) => console.log(error));
@@ -55,36 +46,24 @@ function SignIn() {
     <div className="mycard">
       <div className="auth-card input-field card">
         <h2>Instagram</h2>
-        <form onSubmit={PostData}>
+        <form onSubmit={ResetPassword}>
           <input
             type="email"
             placeholder="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
           <button
             className="btn waves-effect waves-light blue lighten-2"
             type="submit"
             name="action"
           >
-            Login
+            Reset password
           </button>
         </form>
-        <h5>
-          <Link to="/signup">Dont have an account ?</Link>
-        </h5>
-        <h6>
-          <Link to="/reset">Forget password</Link>
-        </h6>
       </div>
     </div>
   );
 }
 
-export default SignIn;
+export default Reset;

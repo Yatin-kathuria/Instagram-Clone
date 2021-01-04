@@ -15,6 +15,8 @@ import UserProfile from "./components/Pages/UserProfile";
 import SubscribedUserPost from "./components/Pages/SubscribedUserPost";
 import { useEffect } from "react";
 import { useGlobalContext } from "./context";
+import Reset from "./components/Pages/Reset";
+import NewPassword from "./components/Pages/NewPassword";
 
 const Routing = () => {
   const history = useHistory();
@@ -26,6 +28,9 @@ const Routing = () => {
       type: "USER",
       payload: user,
     });
+    if (history.location.pathname.startsWith("/reset")) {
+      history.push("/reset");
+    }
     if (!user) {
       history.push("/signin");
     }
@@ -53,6 +58,12 @@ const Routing = () => {
       </Route>
       <Route path="/myfollowingpost">
         <SubscribedUserPost />
+      </Route>
+      <Route exact path="/reset">
+        <Reset />
+      </Route>
+      <Route path="/reset/:token">
+        <NewPassword />
       </Route>
     </Switch>
   );

@@ -13,7 +13,7 @@ function CreatePost() {
   useEffect(() => {
     if (url) {
       // sending the request to the server for saving the image
-      fetch("/createpost", {
+      fetch("http://localhost:5000/createpost", {
         method: "post",
         headers: {
           "Content-Type": "application/json",

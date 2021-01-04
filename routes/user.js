@@ -128,4 +128,19 @@ router.put("/updatpic", requireLogin, (req, res) => {
   });
 });
 
+router.post("/search-users", requireLogin, (req, res) => {
+  let userPattern = new RegExp("^" + req.body.query);
+
+  User.find({ email: { $regex: userPattern } })
+    .select("_id email")
+    .exec((error, user) => {
+      if (error) {
+        return res.status(422).json({
+          error: "unable to upload the pic",
+        });
+      }
+      res.json(user);
+    });
+});
+
 module.exports = router;

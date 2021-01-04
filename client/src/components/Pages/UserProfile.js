@@ -9,7 +9,7 @@ function Profile() {
   const { state, dispatch } = useGlobalContext();
 
   useEffect(() => {
-    fetch(`/users/${userId}`, {
+    fetch(`http://localhost:5000/users/${userId}`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ function Profile() {
   }, []);
 
   const followUser = () => {
-    fetch("/follow", {
+    fetch("http://localhost:5000/follow", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +66,7 @@ function Profile() {
   };
 
   const unFollowUser = () => {
-    fetch("/unfollow", {
+    fetch("http://localhost:5000/unfollow", {
       method: "put",
       headers: {
         "Content-Type": "application/json",

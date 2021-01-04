@@ -8,7 +8,7 @@ function Home() {
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    fetch("/allpost", {
+    fetch("http://localhost:5000/allpost", {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,7 @@ function Home() {
       .likes.includes(state.id);
 
     if (!isAlreadyLiked) {
-      fetch("/like", {
+      fetch("http://localhost:5000/like", {
         method: "put",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ function Home() {
   };
 
   const unlikePost = (id) => {
-    fetch("/unlike", {
+    fetch("http://localhost:5000/unlike", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ function Home() {
   const addComment = (text, id) => {
     console.log(text);
     if (text) {
-      fetch("/comment", {
+      fetch("http://localhost:5000/comment", {
         method: "put",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ function Home() {
   };
 
   const deletepost = (postId) => {
-    fetch(`/deletepost/${postId}`, {
+    fetch(`http://localhost:5000/deletepost/${postId}`, {
       method: "delete",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -125,7 +125,7 @@ function Home() {
   };
 
   const deleteComment = (postId, commentId) => {
-    fetch(`/deletecomment/${postId}&${commentId}`, {
+    fetch(`http://localhost:5000/deletecomment/${postId}&${commentId}`, {
       method: "delete",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,

@@ -7,7 +7,7 @@ function Profile() {
   const { state, dispatch } = useGlobalContext();
 
   useEffect(() => {
-    fetch("/mypost", {
+    fetch("http://localhost:5000/mypost", {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ function Profile() {
     })
       .then((res) => res.json())
       .then((data) => {
-        fetch("/updatpic", {
+        fetch("http://localhost:5000/updatpic", {
           method: "put",
           headers: {
             "Content-Type": "application/json",
