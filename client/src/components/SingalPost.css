@@ -1,0 +1,23 @@
+.singalPost {
+  width: calc(33.33333% - 30px);
+  /* height: calc(33% - 30px); */
+  margin: 10px 1.5%;
+  padding-top: calc(33.33333% - 30px);
+  position: relative;
+}
+
+.singalPost_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* @media only screen and (max-width: 950px) {
+  .profilePost {
+    max-width: 210px;
+  }
+} */

@@ -1,0 +1,12 @@
+.settings {
+  margin: 20px auto;
+  border: 1px solid #dbdbdb;
+  max-width: 935px;
+  /* height: 100vh; */
+  display: flex;
+}
+
+.settings_content {
+  padding: 16px;
+  flex-basis: 700px;
+}

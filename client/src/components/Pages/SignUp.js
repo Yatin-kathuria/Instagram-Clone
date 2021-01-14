@@ -1,129 +1,205 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import M from "materialize-css";
+import "./SignUp.css";
+import fb from "../../images/fb.png";
+import AppStore from "../../images/AppStore.png";
+import GooglePlay from "../../images/GooglePlay.png";
 
 function SignUp() {
   const history = useHistory();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
+  const [username, setUsername] = useState("");
+  const [errors, setErrors] = useState(null);
 
-  useEffect(() => {
-    if (url) {
-      uploadFields();
-    }
-  }, [url]);
-
-  const uploadPic = () => {
-    const data = new FormData();
-    data.append("file", image); // the file to be upload
-    data.append("upload_preset", "insta-clone"); // project name
-    data.append("cloud_name", "yatinkathuria2020"); //cloud name
-
-    // saving the image in the cloud and get the link of that image
-    fetch("https://api.cloudinary.com/v1_1/yatinkathuria2020/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => setUrl(data.secure_url))
-      .catch((err) => console.log(err));
-  };
-
-  const uploadFields = () => {
-    const isValidEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
-      email
-    );
-    if (isValidEmail === false) {
-      M.toast({ html: "invalid email", classes: "red darken-3" });
-      return;
-    }
-
-    fetch("http://localhost:5000/signup", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        password,
-        email,
-        pic: url,
-      }),
-    })
+  const PostData = (e) => {
+    e.preventDefault();
+    setErrors(null);
+    fetch(
+      `${
+        process.env.NODE_ENV === "production"
+          ? "/signup"
+          : "http://localhost:5000/signup"
+      }`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          password,
+          email,
+          username,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          if (data.error) {
-            M.toast({ html: data.error, classes: "red darken-3" });
-          }
-        } else {
-          M.toast({ html: data.message, classes: "green darken-3" });
+        if (Array.isArray(data)) {
+          setErrors(data);
+        }
+        if (data.user) {
+          alert(data.message);
           history.push("/signin");
         }
       })
       .catch((error) => console.log(error));
   };
 
-  const PostData = (e) => {
-    e.preventDefault();
-    if (image) {
-      uploadPic();
-    } else {
-      uploadFields();
-    }
-  };
-
   return (
-    <div className="mycard">
-      <div className="auth-card input-field card">
-        <h2>Instagram</h2>
-        <form onSubmit={PostData}>
-          <input
-            type="text"
-            placeholder="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className="file-field input-field">
-            <div className="btn blue lighten-2">
-              <span>Upload pic</span>
-              <input
-                type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-              />
+    <section className="signup">
+      <article className="conatiner">
+        <div className="first">
+          <div className="first-container">
+            <h1 className="logo">Instagram</h1>
+            <h6 className="signin_subheading">
+              Sign up to see photos and videos from your friends.
+            </h6>
+            <button className="signup_facebook btn">
+              <img src={fb} alt="fb logo" />
+              <span>Log in with facebook</span>
+            </button>
+            <div className="line-group">
+              <div className="line"></div>
+              <div className="text">OR</div>
+              <div className="line"></div>
             </div>
-            <div className="file-path-wrapper">
-              <input className="file-path validate" type="text" />
+            <div>
+              <form onSubmit={PostData}>
+                <div className="input_container">
+                  {email ? (
+                    <>
+                      <p className="input_label">Mobile number or Email</p>
+                    </>
+                  ) : null}
+                  <input
+                    type="text"
+                    placeholder="Mobile number or Email"
+                    className={`${
+                      email ? "input_tag input_tag_write" : "input_tag"
+                    }`}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="input_container">
+                  {name ? (
+                    <>
+                      <p className="input_label">Full Name</p>
+                    </>
+                  ) : null}
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    className={`${
+                      name ? "input_tag input_tag_write" : "input_tag"
+                    }`}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="input_container">
+                  {username ? (
+                    <>
+                      <p className="input_label">Username</p>
+                    </>
+                  ) : null}
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    className={`${
+                      username ? "input_tag input_tag_write" : "input_tag"
+                    }`}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="input_container">
+                  {password ? (
+                    <>
+                      <p className="input_label">Password</p>
+                    </>
+                  ) : null}
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    className={`${
+                      password ? "input_tag input_tag_write" : "input_tag"
+                    }`}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <button
+                  className={`${
+                    !name || !email || !username || !password
+                      ? "btn disabled"
+                      : "btn"
+                  }`}
+                  disabled={!name || !email || !username || !password}
+                >
+                  Sign up
+                </button>
+              </form>
             </div>
+            <p className="errors">{errors ? errors[0].message : null}</p>
+            <p className="policies">
+              By signing up, you agree to our{" "}
+              <a
+                href="https://help.instagram.com/581066165581870"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms
+              </a>
+              ,
+              <a
+                href="https://help.instagram.com/519522125107875"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Data Policy
+              </a>
+              and
+              <a
+                href="https://help.instagram.com/1896641480634370?ref=ig"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Cookies Policy
+              </a>
+              .
+            </p>
           </div>
-          <button
-            className="btn waves-effect waves-light blue lighten-2"
-            type="submit"
-            name="action"
-          >
-            Signup
-          </button>
-        </form>
-        <h5>
-          <Link to="/signin">Already have an account ?</Link>
-        </h5>
-      </div>
-    </div>
+        </div>
+        <div className="second">
+          <p>
+            Dont have a account? <Link to="/signin">Log in</Link>
+          </p>
+        </div>
+        <div className="third">
+          <p>Get the app.</p>
+          <div>
+            <a
+              href="https://apps.apple.com/app/instagram/id389801252?vt=lo"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={AppStore} alt="AppStore logo" />
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DloginPage%26ig_mid%3D7C7CF5CF-A643-4E9A-917D-C11ED2788C48%26utm_content%3Dlo%26utm_medium%3Dbadge"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={GooglePlay} alt="GooglePlay logo" />
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
   );
 }
 

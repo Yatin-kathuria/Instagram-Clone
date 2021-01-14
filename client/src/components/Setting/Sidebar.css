@@ -1,0 +1,9 @@
+.sidebar {
+  flex-basis: 236px;
+  width: 100%;
+  border-right: 1px solid #dbdbdb;
+}
+
+.sidebar_navlink_container {
+  padding: 0;
+}

@@ -1,6 +1,30 @@
-.createPost {
+.CreatePost {
   margin: 30px auto;
   max-width: 500px;
+  min-height: 60vh;
   padding: 20px;
   text-align: center;
+}
+
+.CreatePost_fileLabel {
+  background-color: #0095f6;
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.file-chosen {
+  margin-left: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgb(0, 0, 0);
+  font-family: sans-serif;
+}
+
+.file_input_container {
+  margin: 10px 0;
 }

@@ -1,0 +1,106 @@
+.signin {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-display {
+  position: absolute;
+  left: 150px;
+  top: 100px;
+  height: 427px;
+  width: 240px;
+}
+
+.conatiner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 32px;
+}
+
+.first,
+.second,
+.third {
+  width: 350px;
+  margin: 10px auto;
+  background-color: #fff;
+  text-align: center;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 1px;
+  padding: 10px 10px;
+}
+
+.third {
+  border: none;
+}
+
+.line-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0px;
+}
+.line {
+  height: 1px;
+  width: 100%;
+  background-color: #dbdbdb;
+}
+.text {
+  color: #9e9e9e;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.first-container {
+  margin: 20px;
+}
+
+.facebook-login > div {
+  color: #385185;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.facebook-login > div > img {
+  width: 16px;
+  height: 16px;
+}
+
+.facebook-login > a {
+  font-size: 12px;
+}
+
+.second > p > a {
+  color: #0095f6 !important;
+  font-weight: bold;
+}
+
+.third > div > a > img {
+  height: 40px;
+  width: 136px;
+  margin: 10px 5px;
+}
+
+.image-container {
+  background-image: url("../../images/Phone.png");
+  background-size: 454px 618px;
+  width: 454px;
+  height: 618px;
+}
+
+@media only screen and (max-width: 875px) {
+  .image-container {
+    display: none;
+  }
+} ;

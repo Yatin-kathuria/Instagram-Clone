@@ -30,8 +30,8 @@ router.post("/createpost", requireLogin, (req, res) => {
 
 router.get("/allpost", requireLogin, (req, res) => {
   Post.find()
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id username pic")
     .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });
@@ -43,8 +43,8 @@ router.get("/allpost", requireLogin, (req, res) => {
 
 router.get("/mypost", requireLogin, (req, res) => {
   Post.find({ postedBy: req.user._id })
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
     .sort("-createdAt")
     .then((mypost) => {
       res.json({ mypost });
@@ -64,8 +64,8 @@ router.put("/like", requireLogin, (req, res) => {
       new: true,
     }
   )
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
     .exec((error, result) => {
       if (error) {
         return res.status(422).json({
@@ -87,8 +87,8 @@ router.put("/unlike", requireLogin, (req, res) => {
       new: true,
     }
   )
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic")
     .exec((error, result) => {
       if (error) {
         return res.status(422).json({
@@ -115,8 +115,8 @@ router.put("/comment", requireLogin, (req, res) => {
       new: true,
     }
   )
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
     .exec((error, result) => {
       if (error) {
         return res.status(422).json({
@@ -179,8 +179,8 @@ router.delete("/deletecomment/:postId&:commentId", requireLogin, (req, res) => {
           new: true,
         }
       )
-        .populate("postedBy", "_id name")
-        .populate("comments.postedBy", "_id name")
+        .populate("postedBy", "_id pic username")
+        .populate("comments.postedBy", "_id pic username")
         .exec((error, result) => {
           if (error) {
             return res.status(422).json({
@@ -195,9 +195,9 @@ router.delete("/deletecomment/:postId&:commentId", requireLogin, (req, res) => {
 });
 
 router.get("/getsubpost", requireLogin, (req, res) => {
-  Post.find({ postedBy: { $in: req.user.following } })
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+  Post.find({ postedBy: { $in: [...req.user.following, req.user._id] } })
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
     .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });

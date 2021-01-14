@@ -12,16 +12,23 @@ function NewPassword() {
   const PostData = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:5000/newpassword", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password,
-        token,
-      }),
-    })
+    fetch(
+      `${
+        process.env.NODE_ENV === "production"
+          ? "/newpassword"
+          : "http://localhost:5000/newpassword"
+      }`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password,
+          token,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

@@ -1,11 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap");
 
-a {
-  color: black !important;
-}
-
-.brand-logo,
-h2 {
+.brand-logo {
   font-family: "Grand Hotel", cursive;
 }
 .mycard {
@@ -23,12 +18,90 @@ h2 {
   box-shadow: 0 1px 0 0 #64b5f6 !important;
 }
 
-#toast-container {
-  top: 30px !important;
-  right: 20px !important;
-  left: auto !important;
-}
-
 .material-icons:hover {
   cursor: pointer;
+}
+
+/* input tag css */
+.input_container {
+  border: 1px solid rgb(219, 219, 219);
+  height: 38px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.input_tag {
+  font-size: 16px;
+  padding: 0.25em 0.5em 0.25rem;
+  background-color: #fff;
+  border-radius: 4px;
+  width: 97%;
+  border: none;
+  margin-top: 10px;
+  padding: 0;
+}
+
+.input_tag_write {
+  font-size: 14px;
+  margin-top: 0;
+}
+.input_tag:focus {
+  outline: none;
+}
+.input_tag_write:focus {
+  outline: none;
+}
+
+.input_label {
+  font-size: 10px !important;
+  color: #8e8e8e;
+  text-align: left !important;
+  margin: 0;
+  padding-left: 4px;
+}
+
+/* input tag end css */
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* button  */
+button {
+  outline: none;
+}
+.btn {
+  width: 100%;
+  color: white;
+  background-color: #0095f6;
+  height: 2.5rem;
+  border: 1px solid grey;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.disabled {
+  cursor: not-allowed;
+  background-color: rgba(0, 149, 246, 0.3);
+  border: none;
+  opacity: 1;
+}
+
+.icon_btn {
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.logo {
+  font-weight: 300;
+  font-family: "Grand Hotel", cursive;
+  font-size: 3rem;
+  margin-bottom: 24px;
 }

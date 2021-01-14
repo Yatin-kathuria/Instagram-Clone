@@ -5,8 +5,22 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const requireLogin = require("../middleware/requireLogin");
 const nodemailer = require("nodemailer");
 const sendgridtransport = require("nodemailer-sendgrid-transport");
+
+function ValidateInputType(Text) {
+  if (
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      Text
+    )
+  ) {
+    return { email: Text };
+  }
+  if (/^[a-zA-Z0-9]+$/.test(Text)) {
+    return { username: Text };
+  }
+}
 
 const transporter = nodemailer.createTransport(
   sendgridtransport({
@@ -17,71 +31,74 @@ const transporter = nodemailer.createTransport(
 );
 
 router.post("/signup", (req, res) => {
-  let { name, email, password, pic } = req.body;
-  if (!pic) {
-    pic =
-      "https://res.cloudinary.com/yatinkathuria2020/image/upload/v1609571937/bhareth-np_iawl1e.jpg";
-  }
-  console.log(name, email, password);
-  if (!email || !name || !password) {
+  const errors = [];
+  let { name, email, password, username } = req.body;
+  // if (!pic) {
+  //   pic =
+  //     "https://res.cloudinary.com/yatinkathuria2020/image/upload/v1609571937/bhareth-np_iawl1e.jpg";
+  // }
+  if (!email || !name || !password || !username) {
     return res.status(422).json({
       error: "please add all the fields",
     });
   }
-
-  User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
-        return res.status(422).json({
-          error: "user is already exists with this email",
-        });
-      } else {
-        // encrypt password
-        bcrypt.hash(password, 12).then((hashedPassword) => {
-          const user = new User({
-            name,
-            email,
-            password: hashedPassword,
-            pic,
-          });
-          //saving the user
-          user
-            .save()
-            .then((user) => {
-              transporter.sendMail({
-                to: user.email,
-                from: "yatinkathuria2020@gmail.com",
-                subject: "sign up successfully",
-                html: "<h1>Welcome to instagram</h1>",
-              });
-              return res.json({
-                message: "user saved successfully",
-                user,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+  // find user by username
+  User.findOne({ username })
+    .then((savedUsername) => {
+      if (savedUsername) {
+        errors.push({
+          message: "This username isn't available. Please try another.",
         });
       }
+      // find user by email
+      User.findOne({ email })
+        .then((savedEmail) => {
+          if (savedEmail) {
+            errors.push({ message: `Another account is using ${email}.` });
+
+            return res.status(422).json(errors);
+          } else {
+            // encrypt password
+            bcrypt.hash(password, 12).then((hashedPassword) => {
+              const user = new User({
+                name,
+                email,
+                password: hashedPassword,
+                username,
+              });
+              //saving the user
+              user
+                .save()
+                .then((user) => {
+                  transporter.sendMail({
+                    to: user.email,
+                    from: "yatinkathuria2020@gmail.com",
+                    subject: "sign up successfully",
+                    html: "<h1>Welcome to instagram</h1>",
+                  });
+                  return res.json({
+                    message: "user saved successfully",
+                    user,
+                  });
+                })
+                .catch((error) => console.log(error));
+            });
+          }
+        })
+        .catch((error) => console.log(error));
     })
     .catch((error) => console.log(error));
 });
 
 router.post("/signin", (req, res) => {
-  const { email, password } = req.body;
+  const { text, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(422).json({
-      error: "please add all the email and password",
-    });
-  }
-
-  User.findOne({ email })
+  User.findOne(ValidateInputType(text))
     .then((user) => {
       if (!user) {
         return res.status(422).json({
-          error: "invalid email or password",
+          error:
+            "The username you entered doesn't belong to an account. Please check your username and try again.",
         });
       }
 
@@ -91,14 +108,37 @@ router.post("/signin", (req, res) => {
           if (match) {
             //generating token for user
             const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-            const { _id, name, email, followers, following, pic } = user;
+            const {
+              _id,
+              name,
+              email,
+              username,
+              followers,
+              following,
+              pic,
+              website,
+              bio,
+              phoneNumber,
+            } = user;
             return res.json({
               token,
-              user: { _id, name, email, followers, following, pic },
+              user: {
+                _id,
+                name,
+                email,
+                username,
+                followers,
+                following,
+                pic,
+                bio,
+                website,
+                phoneNumber,
+              },
             });
           } else {
             return res.status(422).json({
-              error: "invalid email or password",
+              error:
+                "Sorry, your password was incorrect. Please double-check your password.",
             });
           }
         })
@@ -163,7 +203,52 @@ router.post("/newpassword", (req, res) => {
           });
       });
     })
-    .catch();
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.put("/change_password", requireLogin, (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  User.findById({ _id: req.user._id })
+    .then((saveduser) => {
+      if (!saveduser) {
+        return res
+          .status(422)
+          .json({ error: "Technical error try again after sometime" });
+      }
+      bcrypt
+        .compare(oldPassword, saveduser.password)
+        .then((match) => {
+          if (!match) {
+            return res.status(422).json({
+              error:
+                "Sorry, old password is incorrect. Please double-check your password.",
+            });
+          } else {
+            bcrypt
+              .hash(newPassword, 12)
+              .then((hashedPassword) => {
+                saveduser.password = hashedPassword;
+                saveduser
+                  .save()
+                  .then((user) => {
+                    if (user) {
+                      return res.json({
+                        message: "password updated successfully",
+                      });
+                    } else {
+                      return res.json({ error: "some technical error" });
+                    }
+                  })
+                  .catch((error) => console.log(error));
+              })
+              .catch((error) => console.log(error));
+          }
+        })
+        .catch((error) => console.log(error));
+    })
+    .catch((error) => console.log(error));
 });
 
 module.exports = router;

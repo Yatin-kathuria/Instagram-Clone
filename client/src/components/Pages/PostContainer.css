@@ -1,0 +1,10 @@
+.postContainer {
+  width: 100vw;
+  min-height: 100vh;
+  transition-property: all 4s ease-out;
+}
+.inner_postContainer {
+  width: 80vw;
+  margin: 10px auto;
+  max-width: 614px;
+}

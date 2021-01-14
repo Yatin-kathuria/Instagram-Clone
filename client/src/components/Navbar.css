@@ -1,7 +1,102 @@
-/* button{
-    color: #64;
-} */
+.navbar {
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
 
-.collection-item {
+.navbar_links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar_logo {
+  font-size: 2rem;
+  font-weight: 300;
+  font-family: "Grand Hotel", cursive;
+}
+
+.profile_pic {
+  width: 22px;
+  height: 22px;
+  /* object-fit: contain; */
+  border-radius: 50%;
+}
+.navbar_search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(142, 142, 142);
+  border: 1px solid #dbdbdb;
+  width: 215px;
+  height: 28px;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.navbar_input_search {
+  color: rgb(38, 38, 38);
+  width: 80%;
+  font-weight: 300;
+  font-size: 14px;
+  border: none;
+  outline: none;
+}
+.navbar_input_search::placeholder {
+  color: rgb(142, 142, 142);
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.material-icons {
+  font-size: 14px;
+}
+
+.navbar_create {
+  font-size: 23px;
+  padding: 0;
+  color: white;
+  background-color: black;
+  font-weight: 300;
+}
+
+.nav_popover {
+  margin-top: 17px;
+}
+.nav_popover_items_container {
+  width: 215px;
+}
+
+.nav_popover_items_items {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+.nav_popover_items_items > p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #262626;
+}
+
+.nav_popover_items_items > svg {
+  margin-right: 12px;
+}
+
+.nav_btn {
+  border: none;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  color: #262626;
+  padding: 8px 16px;
+  cursor: pointer;
   width: 100%;
+}
+
+@media all and (max-width: 590px) {
+  .navbar_search {
+    display: none;
+  }
 }

@@ -1,6 +1,6 @@
-export const initialState = null;
+export const userInitialState = null;
 
-export const reducer = (state, action) => {
+export const userReducer = (userState, action) => {
   if (action.type === "USER") {
     return action.payload;
   }
@@ -9,16 +9,20 @@ export const reducer = (state, action) => {
   }
   if (action.type === "UPDATE") {
     return {
-      ...state,
-      followers: action.payload.followers,
+      ...userState,
       following: action.payload.following,
     };
   }
   if (action.type === "UPDATEPIC") {
     return {
-      ...state,
+      ...userState,
       pic: action.payload,
     };
   }
-  return state;
+
+  if (action.type === "EDIT") {
+    return action.payload;
+  }
+
+  return userState;
 };

@@ -1,0 +1,29 @@
+.explore {
+  max-width: 935px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  /* border: 1px solid black; */
+}
+
+.explore_post {
+  width: calc(33.33333% - 30px);
+  /* height: calc(33% - 30px); */
+  margin: 10px 1.5%;
+  padding-top: calc(33.33333% - 30px);
+  position: relative;
+}
+
+.explore_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}

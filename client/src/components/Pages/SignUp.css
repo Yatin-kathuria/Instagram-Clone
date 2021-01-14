@@ -1,0 +1,41 @@
+.signin {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.signin_subheading {
+  font-weight: 600 !important;
+  color: #8e8e8e;
+  margin: 15px;
+  font-size: 17px;
+}
+
+.signup_facebook {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup_facebook > img {
+  width: 16px;
+  height: 16px;
+}
+.signup_facebook > span {
+  margin-left: 5px;
+}
+
+.policies {
+  color: #8e8e8e !important;
+  font-size: 12px;
+}
+
+.policies > a {
+  color: #8e8e8e !important;
+  font-weight: 600;
+}
+
+.errors {
+  color: rgb(237, 73, 86);
+}

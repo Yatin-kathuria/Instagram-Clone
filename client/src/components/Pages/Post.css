@@ -1,0 +1,141 @@
+.post {
+  width: 100%;
+  border: 1px solid #dbdbdb;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+.post_header {
+  border-bottom: 1px solid #dbdbdb;
+  padding: 16px;
+}
+.post_header_content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.post_profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  position: relative;
+}
+
+.post_profile::before {
+  position: absolute;
+  content: "";
+  left: -2px;
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(
+    45deg,
+    #405de6,
+    #5851db,
+    #833ab4,
+    #c13584,
+    #e1306c,
+    #fd1d1d
+  );
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.post_profile_pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 14px;
+}
+
+.post_image {
+  width: 100%;
+}
+
+.post_info {
+  padding: 8px 16px;
+}
+
+.post_info_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post_bold_600 {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.post_bold_400 {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.post_comments_description {
+  font-size: 14px;
+  color: #8e8e8e;
+}
+
+.post_comments {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post_details > p,
+.post_details > div,
+.post_details > span {
+  margin: 9px 0;
+}
+
+.post_time {
+  color: #8e8e8e;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.post_footer {
+  border-top: 1px solid #dbdbdb;
+  padding: 8px 16px;
+}
+
+.post_footer > form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post_comment_input {
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  width: 100%;
+  height: 18px;
+  max-height: 80px;
+  padding: 10px 0;
+  resize: none;
+  overflow: auto;
+  outline: none;
+  line-height: 18px;
+  color: #262626;
+}
+.post_comment_input::placeholder {
+  color: #8e8e8e;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.post_comment_button {
+  color: #0095f6;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.post_comment_disabled {
+  cursor: not-allowed;
+  color: rgba(0, 149, 246, 0.3);
+  opacity: 1;
+}

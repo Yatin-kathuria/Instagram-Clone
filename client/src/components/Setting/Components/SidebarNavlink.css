@@ -1,0 +1,22 @@
+.SidebarNavlink {
+  /* padding: 0; */
+  /* margin: 0; */
+  /* transition: ease-in 1s; */
+  width: 236px;
+}
+.SidebarNavlink_link {
+  color: #262626;
+  padding: 16px 16px 16px 30px;
+  font-size: 16px;
+  font-weight: 400;
+  height: 100%;
+  display: block;
+  /* transition: ease-in-out 0.3s; */
+}
+
+.active_SidebarNavlink {
+  padding-left: 27px;
+  font-weight: 600;
+  border-left: 2px solid #262626;
+  /* transition: ease-in-out 0.3s; */
+}

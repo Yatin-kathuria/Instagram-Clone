@@ -1,30 +1,37 @@
 import "./App.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./components//Navbar";
 import {
-  BrowserRouter as Router,
   Route,
+  Router,
   Switch,
   useHistory,
+  IndexRoute,
+  useRouteMatch,
 } from "react-router-dom";
-import Home from "./components/Pages/Home";
+import PostContainer from "./components/Pages/PostContainer";
 import Profile from "./components/Pages/Profile";
 import SignIn from "./components/Pages/SignIn";
 import SignUp from "./components/Pages/SignUp";
 import CreatePost from "./components/Pages/CreatePost";
-import UserProfile from "./components/Pages/UserProfile";
 import SubscribedUserPost from "./components/Pages/SubscribedUserPost";
 import { useEffect } from "react";
 import { useGlobalContext } from "./context";
 import Reset from "./components/Pages/Reset";
 import NewPassword from "./components/Pages/NewPassword";
+import Footer from "./components/Pages/Footer";
+import Explore from "./components/Pages/Explore";
+import Settings from "./components/Pages/Settings";
+
+// import Test from "./components/Testing/Profile";
 
 const Routing = () => {
   const history = useHistory();
-  const { dispatch } = useGlobalContext();
+  const { userDispatch } = useGlobalContext();
+  // const { path } = useRouteMatch();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    dispatch({
+    userDispatch({
       type: "USER",
       payload: user,
     });
@@ -38,43 +45,29 @@ const Routing = () => {
 
   return (
     <Switch>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route exact path="/profile">
-        <Profile />
-      </Route>
-      <Route path="/signin">
-        <SignIn />
-      </Route>
-      <Route path="/signup">
-        <SignUp />
-      </Route>
-      <Route path="/create">
-        <CreatePost />
-      </Route>
-      <Route path="/profile/:userId">
-        <UserProfile />
-      </Route>
-      <Route path="/myfollowingpost">
-        <SubscribedUserPost />
-      </Route>
-      <Route exact path="/reset">
-        <Reset />
-      </Route>
-      <Route path="/reset/:token">
-        <NewPassword />
-      </Route>
+      <Route path="/signin" component={SignIn} />
+      <Route path="/signup" component={SignUp} />
+      <Route path="/accounts" component={Settings} />
+      <Route path="/explore" component={Explore} />
+      <Route path="/create" component={CreatePost} />
+      <Route path="/myfollowingpost" component={SubscribedUserPost} />
+      <Route path="/reset" component={Reset} />
+      <Route exact path={`/password_reset`} component={Reset} />
+      <Route path="/reset/:token" component={NewPassword} />
+      <Route path="/:username" component={Profile} />
+      <Route exact path="/" component={PostContainer} />
     </Switch>
   );
 };
 
 function App() {
+  const { userState } = useGlobalContext();
   return (
-    <Router>
-      <Navbar />
+    <>
+      {userState ? <Navbar /> : null}
       <Routing />
-    </Router>
+      <Footer />
+    </>
   );
 }
 
