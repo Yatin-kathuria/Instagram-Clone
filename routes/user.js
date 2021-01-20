@@ -78,6 +78,7 @@ router.put("/unfollow", requireLogin, (req, res) => {
       new: true,
     }
   )
+    .select("-password")
     .populate("postedBy", "_id name")
     .populate("comments.postedBy", "_id name")
     .exec((error, followersResult) => {
@@ -211,10 +212,10 @@ router.put("/edit", requireLogin, async (req, res) => {
 });
 
 router.post("/search-users", requireLogin, (req, res) => {
-  let userPattern = new RegExp("^" + req.body.query);
+  let userPattern = new RegExp("^" + req.body.query, "i");
 
-  User.find({ email: { $regex: userPattern } })
-    .select("_id email")
+  User.find({ username: { $regex: userPattern } })
+    .select("_id username pic")
     .exec((error, user) => {
       if (error) {
         return res.status(422).json({

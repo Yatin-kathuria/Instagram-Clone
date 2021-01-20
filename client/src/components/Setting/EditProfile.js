@@ -149,7 +149,7 @@ function EditProfile() {
             <h1 className="username">{user?.username}</h1>
 
             <input type="file" id="upload" hidden onChange={postImage} />
-            <label for="upload" className="fileLabel">
+            <label htmlFor="upload" className="fileLabel">
               Change Profile Photo
             </label>
           </div>

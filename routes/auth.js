@@ -119,6 +119,7 @@ router.post("/signin", (req, res) => {
               website,
               bio,
               phoneNumber,
+              // savedPosts,
             } = user;
             return res.json({
               token,
@@ -133,6 +134,7 @@ router.post("/signin", (req, res) => {
                 bio,
                 website,
                 phoneNumber,
+                // savedPosts,
               },
             });
           } else {

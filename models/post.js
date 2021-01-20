@@ -34,6 +34,12 @@ const postScheme = new mongoose.Schema(
       type: ObjectId,
       ref: "User",
     },
+    savedBy: [
+      {
+        type: ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

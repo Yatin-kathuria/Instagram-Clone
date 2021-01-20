@@ -32,6 +32,7 @@ router.get("/allpost", requireLogin, (req, res) => {
   Post.find()
     .populate("postedBy", "_id pic username")
     .populate("comments.postedBy", "_id username pic")
+    // .populate("savedPosts")
     .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });
@@ -205,6 +206,62 @@ router.get("/getsubpost", requireLogin, (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+});
+
+router.put("/unsaved-post", requireLogin, (req, res) => {
+  Post.findByIdAndUpdate(
+    { _id: req.body.id },
+    {
+      $pull: { savedBy: req.user._id },
+    },
+    {
+      new: true,
+    }
+  )
+    .select("-password")
+    .exec((error, savedPostResult) => {
+      if (error) {
+        return res.status(422).json({
+          error,
+        });
+      }
+
+      return res.json({ savedPostResult });
+    });
+});
+
+router.put("/saved-post", requireLogin, (req, res) => {
+  Post.findByIdAndUpdate(
+    { _id: req.body.id },
+    {
+      $push: { savedBy: req.user._id },
+    },
+    {
+      new: true,
+    }
+  )
+    .select("-password")
+    .exec((error, savedPostResult) => {
+      if (error) {
+        return res.status(422).json({
+          error,
+        });
+      }
+
+      return res.json({ savedPostResult });
+    });
+});
+
+router.get("/getsavedpost/:id", requireLogin, (req, res) => {
+  const { id } = req.params;
+  Post.find({ savedBy: { $in: id } })
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
+    .sort("-createdAt")
+    .then((posts) => {
+      res.json({ posts });
+    })
+    .catch((error) => console.log(error));
 });
 
 module.exports = router;

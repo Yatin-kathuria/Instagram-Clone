@@ -1,19 +1,11 @@
 import "./App.css";
 import Navbar from "./components//Navbar";
-import {
-  Route,
-  Router,
-  Switch,
-  useHistory,
-  IndexRoute,
-  useRouteMatch,
-} from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import PostContainer from "./components/Pages/PostContainer";
 import Profile from "./components/Pages/Profile";
 import SignIn from "./components/Pages/SignIn";
 import SignUp from "./components/Pages/SignUp";
 import CreatePost from "./components/Pages/CreatePost";
-import SubscribedUserPost from "./components/Pages/SubscribedUserPost";
 import { useEffect } from "react";
 import { useGlobalContext } from "./context";
 import Reset from "./components/Pages/Reset";
@@ -27,7 +19,6 @@ import Settings from "./components/Pages/Settings";
 const Routing = () => {
   const history = useHistory();
   const { userDispatch } = useGlobalContext();
-  // const { path } = useRouteMatch();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -44,19 +35,20 @@ const Routing = () => {
   }, []);
 
   return (
-    <Switch>
-      <Route path="/signin" component={SignIn} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/accounts" component={Settings} />
-      <Route path="/explore" component={Explore} />
-      <Route path="/create" component={CreatePost} />
-      <Route path="/myfollowingpost" component={SubscribedUserPost} />
-      <Route path="/reset" component={Reset} />
-      <Route exact path={`/password_reset`} component={Reset} />
-      <Route path="/reset/:token" component={NewPassword} />
-      <Route path="/:username" component={Profile} />
-      <Route exact path="/" component={PostContainer} />
-    </Switch>
+    <div style={{ marginTop: "80px" }}>
+      <Switch>
+        <Route path="/signin" component={SignIn} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/accounts" component={Settings} />
+        <Route path="/explore" component={Explore} />
+        <Route path="/create" component={CreatePost} />
+        <Route path="/reset" component={Reset} />
+        <Route path="/password_reset" component={Reset} />
+        <Route path="/reset/:token" component={NewPassword} />
+        <Route path="/:username" component={Profile} />
+        <Route exact path="/" component={PostContainer} />
+      </Switch>
+    </div>
   );
 };
 

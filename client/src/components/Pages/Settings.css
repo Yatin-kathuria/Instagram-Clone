@@ -10,3 +10,10 @@
   padding: 16px;
   flex-basis: 700px;
 }
+
+.no-content {
+  text-align: center;
+  margin-top: 30%;
+  font-weight: 700;
+  font-size: 24px;
+}

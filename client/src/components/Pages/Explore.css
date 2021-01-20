@@ -1,5 +1,6 @@
 .explore {
   max-width: 935px;
+  /* min-height: 80vh; */
   margin: 0 auto;
   padding: 30px 20px;
   min-height: 70vh;

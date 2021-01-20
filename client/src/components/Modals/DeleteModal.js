@@ -14,10 +14,10 @@ function DeleteModal({
   const body = (
     <div className="deleteModal">
       <div className="deleteModal_container">
-        <button className="button special-style">Report</button>
+        <button className="button special-style border-b">Report</button>
 
         <button
-          className={`button special-style ${
+          className={`button special-style border-b ${
             comment.postedBy._id === userState._id ? "d-block" : "d-none"
           }`}
           onClick={() => deleteComment(comment._id)}

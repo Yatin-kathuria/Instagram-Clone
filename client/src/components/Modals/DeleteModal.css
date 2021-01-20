@@ -23,14 +23,19 @@
   height: 48px;
   border: none;
   background-color: #fff;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 14px;
   padding: 4px 0;
   line-height: 1.5rem;
+  color: #262626;
   cursor: pointer;
 }
 
 .special-style {
-  border-bottom: 1px solid #dbdbdb;
+  font-weight: 700;
   color: #ed4956;
+}
+
+.border-b {
+  border-bottom: 1px solid #dbdbdb;
 }

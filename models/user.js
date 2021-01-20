@@ -53,6 +53,12 @@ const userScheme = new mongoose.Schema({
   expireToken: {
     type: Date,
   },
+  // savedPosts: [
+  //   {
+  //     type: ObjectId,
+  //     ref: "Post",
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("User", userScheme);

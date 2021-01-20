@@ -13,7 +13,6 @@ import "./Settings.css";
 
 function Settings() {
   const { path } = useRouteMatch();
-  console.log(`path is ${path}`);
   return (
     <section className="settings">
       <Sidebar />

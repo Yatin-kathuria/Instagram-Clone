@@ -1,7 +1,12 @@
 import React from "react";
 
 function AppAndWebsite() {
-  return <div>AppAndWebsite AppAndWebsite</div>;
+  return (
+    <div className="no-content">
+      Work in Progess..... Please Explore other pages.
+      <br /> Happy Codeing
+    </div>
+  );
 }
 
 export default AppAndWebsite;

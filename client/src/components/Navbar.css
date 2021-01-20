@@ -3,19 +3,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  top: 0;
+  left: 0;
+  /* right: 0; */
+  z-index: 999;
 }
 
 .navbar_links {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 20px;
 }
 
 .navbar_logo {
   font-size: 2rem;
   font-weight: 300;
   font-family: "Grand Hotel", cursive;
+  margin-left: 10px;
+  color: #262626;
 }
 
 .profile_pic {
@@ -94,6 +105,64 @@
   cursor: pointer;
   width: 100%;
 }
+
+.navbar_popover_input {
+  width: 215px;
+  /* display: block; */
+  margin: 5.5px;
+  color: rgb(142, 142, 142);
+  border: 1px solid #dbdbdb;
+  height: 28px;
+  font-weight: 300;
+  font-size: 16px;
+  outline: none;
+}
+
+.nav_popover_search_items_container {
+  width: fit-content;
+  max-height: 220px;
+}
+
+.search_popover > div:nth-child(3) {
+  top: 0px !important;
+}
+
+.nav_search_items {
+  color: #262626;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.navbar_popover_input_link {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  padding: 8px 14px;
+  height: 50px;
+  border-bottom: solid 1px #dbdbdb;
+}
+
+.userImage_container {
+  width: 44px;
+  height: 44px;
+  margin-right: 10px;
+}
+
+.userImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* .nav_active > button > svg {
+  color: black;
+  fill: black;
+} */
+
+/* .navlink_disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+} */
 
 @media all and (max-width: 590px) {
   .navbar_search {

@@ -29,9 +29,29 @@ export const myFollowingPostReducer = (myFollowingPostState, action) => {
     });
     return newSingalPost;
   }
-  //   if (action.type === "CLEAR") {
-  //     return null;
-  //   }
+  if (action.type === "REMOVE") {
+    const newPosts = myFollowingPostState.filter(
+      (post) => post.postedBy._id !== action.payload
+    );
+    return newPosts;
+  }
+  if (action.type === "REMOVE_POST") {
+    const newPosts = myFollowingPostState.filter(
+      (post) => post._id !== action.payload
+    );
+    return newPosts;
+  }
+
+  if (action.type === "UPDATE_SAVEDBY") {
+    const newState = myFollowingPostState.map((post) => {
+      if (post._id === action.payload._id) {
+        return { ...post, savedBy: action.payload.savedBy };
+      } else {
+        return post;
+      }
+    });
+    return newState;
+  }
   //   if (action.type === "UPDATE") {
   //     return {
   //       ...userState,

@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context";
-import { useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import SingalPost from "../SingalPost";
 import "./Profile.css";
+import Saved from "../Profile/Saved";
+import IGTV from "../Profile/IGTV";
+import Tagged from "../Profile/Tagged";
 
 function Profile() {
+  const { path, url } = useRouteMatch();
   const { username } = useParams();
   const { userState, userDispatch } = useGlobalContext();
   const [myPosts, setMyPosts] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
   const [followed, setFollowed] = useState(null);
   const [followingProcessing, setFollowingProcessing] = useState(false);
+  console.log(userProfile?.username);
 
   useEffect(() => {
     fetch(
@@ -39,7 +51,6 @@ function Profile() {
       })
       .catch((error) => console.log(error));
   }, [username]);
-  console.log(userProfile?.bio);
 
   const followUser = () => {
     setFollowingProcessing(true);
@@ -136,7 +147,7 @@ function Profile() {
   };
 
   if (!userProfile) {
-    return null;
+    return <section className="profile"></section>;
   }
 
   return (
@@ -154,23 +165,27 @@ function Profile() {
             <h1>{userProfile?.username}</h1>
             {userState._id === userProfile._id ? (
               <div className="profile_edit_container">
-                <button className="edit_btn">Edit Profile</button>
-                <button className="setting_btn">
-                  <svg
-                    aria-label="Options"
-                    className="_8-yf5 "
-                    fill="#262626"
-                    height="24"
-                    viewBox="0 0 48 48"
-                    width="24"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      d="M46.7 20.6l-2.1-1.1c-.4-.2-.7-.5-.8-1-.5-1.6-1.1-3.2-1.9-4.7-.2-.4-.3-.8-.1-1.2l.8-2.3c.2-.5 0-1.1-.4-1.5l-2.9-2.9c-.4-.4-1-.5-1.5-.4l-2.3.8c-.4.1-.8.1-1.2-.1-1.4-.8-3-1.5-4.6-1.9-.4-.1-.8-.4-1-.8l-1.1-2.2c-.3-.5-.8-.8-1.3-.8h-4.1c-.6 0-1.1.3-1.3.8l-1.1 2.2c-.2.4-.5.7-1 .8-1.6.5-3.2 1.1-4.6 1.9-.4.2-.8.3-1.2.1l-2.3-.8c-.5-.2-1.1 0-1.5.4L5.9 8.8c-.4.4-.5 1-.4 1.5l.8 2.3c.1.4.1.8-.1 1.2-.8 1.5-1.5 3-1.9 4.7-.1.4-.4.8-.8 1l-2.1 1.1c-.5.3-.8.8-.8 1.3V26c0 .6.3 1.1.8 1.3l2.1 1.1c.4.2.7.5.8 1 .5 1.6 1.1 3.2 1.9 4.7.2.4.3.8.1 1.2l-.8 2.3c-.2.5 0 1.1.4 1.5L8.8 42c.4.4 1 .5 1.5.4l2.3-.8c.4-.1.8-.1 1.2.1 1.4.8 3 1.5 4.6 1.9.4.1.8.4 1 .8l1.1 2.2c.3.5.8.8 1.3.8h4.1c.6 0 1.1-.3 1.3-.8l1.1-2.2c.2-.4.5-.7 1-.8 1.6-.5 3.2-1.1 4.6-1.9.4-.2.8-.3 1.2-.1l2.3.8c.5.2 1.1 0 1.5-.4l2.9-2.9c.4-.4.5-1 .4-1.5l-.8-2.3c-.1-.4-.1-.8.1-1.2.8-1.5 1.5-3 1.9-4.7.1-.4.4-.8.8-1l2.1-1.1c.5-.3.8-.8.8-1.3v-4.1c.4-.5.1-1.1-.4-1.3zM24 41.5c-9.7 0-17.5-7.8-17.5-17.5S14.3 6.5 24 6.5 41.5 14.3 41.5 24 33.7 41.5 24 41.5z"
-                      fillRule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
+                <Link to="/accounts/edit">
+                  <button className="edit_btn">Edit Profile</button>
+                </Link>
+                <Link to="/accounts/edit">
+                  <button className="setting_btn">
+                    <svg
+                      aria-label="Options"
+                      className="_8-yf5 "
+                      fill="#262626"
+                      height="24"
+                      viewBox="0 0 48 48"
+                      width="24"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M46.7 20.6l-2.1-1.1c-.4-.2-.7-.5-.8-1-.5-1.6-1.1-3.2-1.9-4.7-.2-.4-.3-.8-.1-1.2l.8-2.3c.2-.5 0-1.1-.4-1.5l-2.9-2.9c-.4-.4-1-.5-1.5-.4l-2.3.8c-.4.1-.8.1-1.2-.1-1.4-.8-3-1.5-4.6-1.9-.4-.1-.8-.4-1-.8l-1.1-2.2c-.3-.5-.8-.8-1.3-.8h-4.1c-.6 0-1.1.3-1.3.8l-1.1 2.2c-.2.4-.5.7-1 .8-1.6.5-3.2 1.1-4.6 1.9-.4.2-.8.3-1.2.1l-2.3-.8c-.5-.2-1.1 0-1.5.4L5.9 8.8c-.4.4-.5 1-.4 1.5l.8 2.3c.1.4.1.8-.1 1.2-.8 1.5-1.5 3-1.9 4.7-.1.4-.4.8-.8 1l-2.1 1.1c-.5.3-.8.8-.8 1.3V26c0 .6.3 1.1.8 1.3l2.1 1.1c.4.2.7.5.8 1 .5 1.6 1.1 3.2 1.9 4.7.2.4.3.8.1 1.2l-.8 2.3c-.2.5 0 1.1.4 1.5L8.8 42c.4.4 1 .5 1.5.4l2.3-.8c.4-.1.8-.1 1.2.1 1.4.8 3 1.5 4.6 1.9.4.1.8.4 1 .8l1.1 2.2c.3.5.8.8 1.3.8h4.1c.6 0 1.1-.3 1.3-.8l1.1-2.2c.2-.4.5-.7 1-.8 1.6-.5 3.2-1.1 4.6-1.9.4-.2.8-.3 1.2-.1l2.3.8c.5.2 1.1 0 1.5-.4l2.9-2.9c.4-.4.5-1 .4-1.5l-.8-2.3c-.1-.4-.1-.8.1-1.2.8-1.5 1.5-3 1.9-4.7.1-.4.4-.8.8-1l2.1-1.1c.5-.3.8-.8.8-1.3v-4.1c.4-.5.1-1.1-.4-1.3zM24 41.5c-9.7 0-17.5-7.8-17.5-17.5S14.3 6.5 24 6.5 41.5 14.3 41.5 24 33.7 41.5 24 41.5z"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                </Link>
               </div>
             ) : (
               <>
@@ -211,24 +226,24 @@ function Profile() {
                     width="24"
                   >
                     <circle
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                       cx="8"
                       cy="24"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       r="4.5"
                     ></circle>
                     <circle
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                       cx="24"
                       cy="24"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       r="4.5"
                     ></circle>
                     <circle
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                       cx="40"
                       cy="24"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       r="4.5"
                     ></circle>
                   </svg>
@@ -238,7 +253,7 @@ function Profile() {
           </div>
           <div className="profile_data">
             <p>
-              <span className="bold_data">37</span> posts
+              <span className="bold_data">{myPosts?.length}</span> posts
             </p>
             <p>
               <span className="bold_data">{userProfile?.followers.length}</span>{" "}
@@ -259,7 +274,13 @@ function Profile() {
       </div>
       {/* Pofile nav links */}
       <div className="profile_nav_container">
-        <a href="/realyatinkathuria/" className="profile_nav_links">
+        <NavLink
+          to={`/${username}/`}
+          className="profile_nav_links"
+          activeClassName={`${
+            url !== `/${username}/` ? "profile_nav_links" : "active"
+          }`}
+        >
           <div>
             <svg
               aria-label="Posts"
@@ -276,8 +297,12 @@ function Profile() {
             </svg>
             <span className="profile_nav_text">Posts</span>
           </div>
-        </a>
-        <a href="/realyatinkathuria/channel/" className="profile_nav_links">
+        </NavLink>
+        <NavLink
+          to={`/${username}/channel`}
+          className="profile_nav_links"
+          activeClassName="active"
+        >
           <div>
             <svg
               aria-label="Posts"
@@ -290,8 +315,12 @@ function Profile() {
             </svg>
             <span className="profile_nav_text">IGTV</span>
           </div>
-        </a>
-        <a href="/realyatinkathuria/saved/" className="profile_nav_links">
+        </NavLink>
+        <NavLink
+          to={`/${username}/saved`}
+          className="profile_nav_links"
+          activeClassName="active"
+        >
           <div>
             <svg
               aria-label="Saved"
@@ -304,8 +333,12 @@ function Profile() {
             </svg>
             <span className="profile_nav_text">Saved</span>
           </div>
-        </a>
-        <a href="/realyatinkathuria/tagged/" className="profile_nav_links">
+        </NavLink>
+        <NavLink
+          to={`/${username}/tagged`}
+          className="profile_nav_links"
+          activeClassName="active"
+        >
           <div>
             <svg
               aria-label="Tagged"
@@ -318,12 +351,23 @@ function Profile() {
             </svg>
             <span className="profile_nav_text">Tagged</span>
           </div>
-        </a>
+        </NavLink>
       </div>
       <section className="profile_post_container">
-        {myPosts?.map((myPost) => {
-          return <SingalPost myPost={myPost} />;
-        })}
+        <Switch>
+          <Route exact path={`${path}/`}>
+            {myPosts?.map((myPost) => {
+              return <SingalPost key={myPost._id} myPost={myPost} />;
+            })}
+          </Route>
+          <Route path={`${path}/channel`} component={IGTV} />
+          {/* <Route path={`${path}/saved`} component={Saved} /> */}
+          <Route
+            path={`${path}/saved`}
+            render={(props) => <Saved {...props} id={userProfile?._id} />}
+          />
+          <Route path={`${path}/tagged`} component={Tagged} />
+        </Switch>
       </section>
     </section>
   );

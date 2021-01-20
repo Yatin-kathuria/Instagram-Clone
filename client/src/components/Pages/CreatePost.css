@@ -1,7 +1,8 @@
 .CreatePost {
   margin: 30px auto;
   max-width: 500px;
-  min-height: 60vh;
+  /* min-height: 60vh; */
+  height: calc(80%-80px);
   padding: 20px;
   text-align: center;
 }
