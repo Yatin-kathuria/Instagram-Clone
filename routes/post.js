@@ -264,4 +264,78 @@ router.get("/getsavedpost/:id", requireLogin, (req, res) => {
     .catch((error) => console.log(error));
 });
 
+router.put("/like_comment", requireLogin, (req, res) => {
+  const { commentId, postId } = req.body;
+  Post.findById(postId)
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
+    .exec((error, result) => {
+      if (error) {
+        return res.status(422).json({
+          error,
+        });
+      }
+      if (result) {
+        const newcomments = result.comments.map((comment) => {
+          if (comment._id == commentId) {
+            return {
+              ...comment._doc,
+              commentLikes: [...comment._doc.commentLikes, req.user._id],
+            };
+          } else {
+            return comment;
+          }
+        });
+        result.comments = newcomments;
+        result
+          .save()
+          .then((post) => {
+            return res.json(post);
+          })
+          .catch((error) => console.log(error));
+      }
+    });
+});
+
+router.put("/unlike_comment", requireLogin, (req, res) => {
+  const { commentId, postId } = req.body;
+  Post.findById(postId)
+    .populate("postedBy", "_id pic username")
+    .populate("comments.postedBy", "_id pic username")
+    .exec((error, result) => {
+      if (error) {
+        return res.status(422).json({
+          error,
+        });
+      }
+      if (result) {
+        const newcomments = result.comments.map((comment) => {
+          if (comment._id == commentId) {
+            const newCommentLikes = comment._doc.commentLikes.filter((id) => {
+              if (id != req.user._id) {
+                return;
+              }
+              return id;
+            });
+            // console.log(newCommentLikes);
+            return {
+              ...comment._doc,
+              commentLikes: newCommentLikes,
+            };
+          } else {
+            return comment;
+          }
+        });
+        // res.json(newcomments);
+        result.comments = newcomments;
+        result
+          .save()
+          .then((post) => {
+            return res.json(post);
+          })
+          .catch((error) => console.log(error));
+      }
+    });
+});
+
 module.exports = router;

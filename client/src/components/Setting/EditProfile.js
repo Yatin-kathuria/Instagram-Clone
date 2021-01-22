@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context";
-import InputField from "./Components/InputField";
 import "./EditProfile.css";
 
 function EditProfile() {

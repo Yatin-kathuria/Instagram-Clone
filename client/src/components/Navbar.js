@@ -15,7 +15,6 @@ function Navbar() {
   const [displayUser, setDisplayUser] = useState(null);
 
   const logout = () => {
-    console.log("logout");
     localStorage.clear();
     userDispatch({ type: "CLEAR" });
     history.push("/signin");

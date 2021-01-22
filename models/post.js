@@ -23,11 +23,17 @@ const postScheme = new mongoose.Schema(
     ],
     comments: [
       {
-        text: String,
+        text: { type: String },
         postedBy: {
           type: ObjectId,
           ref: "User",
         },
+        commentLikes: [
+          {
+            type: ObjectId,
+            ref: "User",
+          },
+        ],
       },
     ],
     postedBy: {

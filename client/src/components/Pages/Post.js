@@ -5,6 +5,7 @@ import "./Post.css";
 import PostModal from "../Modals/PostModal";
 import { Comment } from "../Comment";
 import ProfileModal from "../Modals/ProfileModal";
+import Moment from "react-moment";
 
 function Post({ post }) {
   const { userState, myFollowingPostDispatch } = useGlobalContext();
@@ -18,8 +19,10 @@ function Post({ post }) {
   useEffect(() => {
     setSingalPost({ ...post });
     setPostLiked(post?.likes.includes(userState?._id));
+
     setPostSaved(post?.savedBy.includes(userState?._id));
   }, [post, userState]);
+  // console.log();
 
   const likePost = (id) => {
     setPostLiked(true);
@@ -48,6 +51,38 @@ function Post({ post }) {
           myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: likedPost });
         } else {
           setPostLiked(false);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const unlikePost = (id) => {
+    setPostLiked(false);
+    fetch(
+      `${
+        process.env.NODE_ENV === "production"
+          ? "/unlike"
+          : "http://localhost:5000/unlike"
+      }`,
+      {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((unlikePost) => {
+        if (unlikePost) {
+          setPostLiked(false);
+          setSingalPost({ ...singalPost, likes: unlikePost.likes });
+          myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: unlikePost });
+        } else {
+          setPostLiked(true);
         }
       })
       .catch((error) => console.log(error));
@@ -130,38 +165,6 @@ function Post({ post }) {
           });
         } else {
           setPostSaved(true);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const unlikePost = (id) => {
-    setPostLiked(false);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/unlike"
-          : "http://localhost:5000/unlike"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((unlikePost) => {
-        if (unlikePost) {
-          setPostLiked(false);
-          setSingalPost({ ...singalPost, likes: unlikePost.likes });
-          myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: unlikePost });
-        } else {
-          setPostLiked(true);
         }
       })
       .catch((error) => console.log(error));
@@ -378,17 +381,25 @@ function Post({ post }) {
           </header>
           <div className="post_bold_400 post_details">
             <p>
-              Liked by <span className="post_bold_600">deepikagoyal307</span>{" "}
-              and
+              Liked by
+              {/* <span className="post_bold_600">deepikagoyal307</span>{" "}
+              and */}
               <span className="post_bold_600">
                 {" "}
-                {singalPost?.likes.length} others
+                {singalPost?.likes.length} people
               </span>
             </p>
             <p>
-              <span className="post_bold_600">
-                {singalPost?.postedBy.username}{" "}
-              </span>
+              <Link
+                to={`/${singalPost?.postedBy.username}/`}
+                className="post_bold_600"
+                style={{
+                  cursor: "pointer",
+                  marginRight: "5px",
+                }}
+              >
+                <span>{singalPost?.postedBy.username} </span>
+              </Link>
               {singalPost?.body}
             </p>
             <p
@@ -403,10 +414,12 @@ function Post({ post }) {
                 key={comment._id}
                 comment={comment}
                 deleteComment={deleteComment}
+                postId={singalPost?._id}
               />
             ))}
-
-            <span className="post_time"> 2 HOURS AGO</span>
+            <Moment className="post_time" fromNow>
+              {singalPost?.createdAt}
+            </Moment>
           </div>
         </div>
         <footer className="post_footer">
@@ -439,6 +452,9 @@ function Post({ post }) {
             postLiked={postLiked}
             likePost={likePost}
             unlikePost={unlikePost}
+            postSaved={postSaved}
+            savedPost={savedPost}
+            unsavedPost={unsavedPost}
             deleteComment={deleteComment}
           />
         ) : null}

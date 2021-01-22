@@ -19,6 +19,7 @@ export const myFollowingPostReducer = (myFollowingPostState, action) => {
     });
     return newSingalPost;
   }
+
   if (action.type === "UPDATE_COMMENT") {
     const newSingalPost = myFollowingPostState.map((post) => {
       if (post._id === action.payload._id) {
@@ -51,6 +52,17 @@ export const myFollowingPostReducer = (myFollowingPostState, action) => {
       }
     });
     return newState;
+  }
+
+  if (action.type === "LIKE_UNLIKE_COMMENT") {
+    const newSingalPost = myFollowingPostState.map((post) => {
+      if (post._id === action.payload.post._id) {
+        return { ...post, comments: [...action.payload.post.comments] };
+      } else {
+        return post;
+      }
+    });
+    return newSingalPost;
   }
   //   if (action.type === "UPDATE") {
   //     return {

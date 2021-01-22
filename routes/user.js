@@ -125,7 +125,7 @@ router.put("/updatepic", requireLogin, (req, res) => {
         error: "unable to upload the pic",
       });
     }
-    res.json(result);
+    return res.json(result);
   });
 });
 

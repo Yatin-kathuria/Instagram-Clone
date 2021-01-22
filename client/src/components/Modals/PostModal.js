@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./PostModal.css";
 import { Modal } from "@material-ui/core";
 import { CommentOverModal } from "../Comment";
+import Moment from "react-moment";
+import { Link } from "react-router-dom";
 
 function PostModal({
   postModalOpen,
@@ -11,9 +13,13 @@ function PostModal({
   postLiked,
   likePost,
   unlikePost,
+  postSaved,
+  savedPost,
+  unsavedPost,
   deleteComment,
 }) {
   const [comment, setComment] = useState("");
+  const commentFocus = useRef();
 
   const addComment = (e) => {
     e.preventDefault();
@@ -59,7 +65,17 @@ function PostModal({
                   className="profile_pic height_width"
                 />
               </button>
-              <p>{singalPost?.postedBy.username}</p>
+              <Link
+                to={`/${singalPost?.postedBy.username}/`}
+                style={{
+                  cursor: "pointer",
+                  marginRight: "5px",
+                  color: "#262626",
+                  fontWeight: "600",
+                }}
+              >
+                <p>{singalPost?.postedBy.username}</p>
+              </Link>
               <button className="postModal_follow_btn icon_btn ">
                 Following
               </button>
@@ -103,6 +119,7 @@ function PostModal({
                 key={comment._id}
                 comment={comment}
                 deleteComment={deleteComment}
+                postId={singalPost?._id}
               />
             ))}
           </article>
@@ -135,7 +152,10 @@ function PostModal({
                     </svg>
                   )}
                 </button>
-                <button className="icon_btn">
+                <button
+                  className="icon_btn"
+                  onClick={() => commentFocus.current.focus()}
+                >
                   <svg
                     aria-label="Comment"
                     fill="#262626"
@@ -150,7 +170,7 @@ function PostModal({
                     ></path>
                   </svg>
                 </button>
-                <button className="icon_btn" style={{ paddingRight: "0" }}>
+                {/* <button className="icon_btn" style={{ paddingRight: "0" }}>
                   <svg
                     aria-label="Share Post"
                     fill="#262626"
@@ -160,29 +180,51 @@ function PostModal({
                   >
                     <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2 6.1h35.5L18 18.7 5.2 6.1zm18.7 33.6l-4.4-18.4L42.4 8.6 23.9 39.7z"></path>
                   </svg>
-                </button>
+                </button> */}
               </div>
               <div>
-                <button className="icon_btn">
-                  <svg
-                    aria-label="Save"
-                    className="_8-yf5 "
-                    fill="#262626"
-                    height="24"
-                    viewBox="0 0 48 48"
-                    width="24"
+                {postSaved ? (
+                  <button
+                    className="icon_btn"
+                    onClick={() => unsavedPost(singalPost?._id)}
                   >
-                    <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z"></path>
-                  </svg>
-                </button>
+                    <svg
+                      aria-label="Remove"
+                      className="_8-yf5 "
+                      fill="#262626"
+                      height="24"
+                      viewBox="0 0 48 48"
+                      width="24"
+                    >
+                      <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 28.9 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1z"></path>
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    className="icon_btn"
+                    onClick={() => savedPost(singalPost?._id)}
+                  >
+                    <svg
+                      aria-label="Save"
+                      className="_8-yf5 "
+                      fill="#262626"
+                      height="24"
+                      viewBox="0 0 48 48"
+                      width="24"
+                    >
+                      <path d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z"></path>
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
             <p>
-              Liked by <span className="post_bold_600">deepikagoyal307</span>{" "}
-              and
+              Liked by
+              {/* <span className="post_bold_600">deepikagoyal307</span>{" "}
+              and */}
               <span className="post_bold_600">
                 {" "}
-                {singalPost?.likes.length} others
+                {singalPost?.likes.length} peoples
               </span>
             </p>
             <p>
@@ -191,13 +233,16 @@ function PostModal({
               </span>{" "}
               {singalPost?.body}
             </p>
-            <span className="post_time"> 2 HOURS AGO</span>
+            <Moment className="post_time" fromNow>
+              {singalPost?.createdAt}
+            </Moment>
           </footer>
           <div className="postModal_form_container">
             <form className="postModal_form" onSubmit={addComment}>
               {/* onSubmit={addComment} */}
               <textarea
                 type="text"
+                ref={commentFocus}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Add a comment..."
