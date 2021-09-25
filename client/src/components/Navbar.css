@@ -33,6 +33,7 @@
   width: 22px;
   height: 22px;
   /* object-fit: contain; */
+  border: 2px solid #8a9efe;
   border-radius: 50%;
 }
 .navbar_search {

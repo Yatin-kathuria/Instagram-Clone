@@ -1,5 +1,4 @@
 .postContainer {
-  width: 100vw;
   min-height: 100vh;
   transition-property: all 4s ease-out;
 }

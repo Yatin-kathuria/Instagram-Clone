@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import "./SignUp.css";
+import styles from "./SignUp.module.css";
+import Divider from "../../components/Divider/Divider";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import { CircularProgress } from "@material-ui/core";
 
 function SignUp() {
   const history = useHistory();
@@ -9,10 +13,12 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState(null);
+  const [isloading, setIsloading] = useState(false);
 
   const PostData = (e) => {
     e.preventDefault();
     setError(null);
+    setIsloading(true);
     fetch(
       `${
         process.env.NODE_ENV === "production"
@@ -41,107 +47,63 @@ function SignUp() {
           history.push("/signin");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setIsloading(false));
   };
 
   return (
-    <section className="signup">
-      <article className="conatiner">
-        <div className="first">
-          <div className="first-container">
-            <h1 className="logo">Instagram</h1>
-            <h6 className="signin_subheading">
+    <section className={styles.signup}>
+      <article className={styles.conatiner}>
+        <div className={styles.first}>
+          <div className={styles.firstContainer}>
+            <h1 className={styles.logo}>Instagram</h1>
+            <h6 className={styles.subheading}>
               Sign up to see photos and videos from your friends.
             </h6>
-            <button className="signup_facebook btn">
+            <button className={styles.facebook}>
               <img src="/images/fb.png" alt="fb logo" />
               <span>Log in with facebook</span>
             </button>
-            <div className="line-group">
-              <div className="line"></div>
-              <div className="text">OR</div>
-              <div className="line"></div>
-            </div>
+            <Divider text="OR" />
             <div>
               <form onSubmit={PostData}>
-                <div className="input_container">
-                  {email ? (
-                    <>
-                      <p className="input_label">Mobile number or Email</p>
-                    </>
-                  ) : null}
-                  <input
-                    type="text"
-                    placeholder="Mobile number or Email"
-                    className={`${
-                      email ? "input_tag input_tag_write" : "input_tag"
-                    }`}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="input_container">
-                  {name ? (
-                    <>
-                      <p className="input_label">Full Name</p>
-                    </>
-                  ) : null}
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className={`${
-                      name ? "input_tag input_tag_write" : "input_tag"
-                    }`}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="input_container">
-                  {username ? (
-                    <>
-                      <p className="input_label">Username</p>
-                    </>
-                  ) : null}
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    className={`${
-                      username ? "input_tag input_tag_write" : "input_tag"
-                    }`}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="input_container">
-                  {password ? (
-                    <>
-                      <p className="input_label">Password</p>
-                    </>
-                  ) : null}
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className={`${
-                      password ? "input_tag input_tag_write" : "input_tag"
-                    }`}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <button
-                  className={`${
-                    !name || !email || !username || !password
-                      ? "btn disabled"
-                      : "btn"
-                  }`}
-                  disabled={!name || !email || !username || !password}
-                >
-                  Sign up
-                </button>
+                <Input
+                  value={email}
+                  placeholder="Mobile number or Email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Input
+                  value={name}
+                  placeholder="Full Name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <Input
+                  value={username}
+                  placeholder="Username"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <Input
+                  value={password}
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                />
+                <Button
+                  disabled={
+                    !name || !email || !username || !password || isloading
+                  }
+                  label={
+                    isloading ? (
+                      <CircularProgress size={20} color="#0095f6" />
+                    ) : (
+                      "Sign up"
+                    )
+                  }
+                />
               </form>
             </div>
-            {error && <p className="errors">{error}</p>}
-            <p className="policies">
+            {error && <p className={styles.errors}>{error}</p>}
+            <p className={styles.policies}>
               By signing up, you agree to our{" "}
               <a
                 href="https://help.instagram.com/581066165581870"
@@ -170,12 +132,12 @@ function SignUp() {
             </p>
           </div>
         </div>
-        <div className="second">
+        <div className={styles.second}>
           <p>
             Dont have a account? <Link to="/signin">Log in</Link>
           </p>
         </div>
-        <div className="third">
+        <div className={styles.third}>
           <p>Get the app.</p>
           <div>
             <a

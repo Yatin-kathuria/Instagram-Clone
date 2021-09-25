@@ -4,11 +4,21 @@
   justify-content: space-evenly;
 }
 
-.image-container {
+.imageContainer {
   position: relative;
+  background-size: 454px 618px;
+  width: 454px;
+  height: 618px;
 }
 
-.image-display {
+.logo {
+  font-weight: 300;
+  font-family: "Grand Hotel", cursive;
+  font-size: 3rem;
+  margin-bottom: 24px;
+}
+
+.imageDisplay {
   position: absolute;
   left: 150px;
   top: 100px;
@@ -40,30 +50,11 @@
   border: none;
 }
 
-.line-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 0px;
-}
-.line {
-  height: 1px;
-  width: 100%;
-  background-color: #dbdbdb;
-}
-.text {
-  color: #9e9e9e;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.first-container {
+.firstContainer {
   margin: 20px;
 }
 
-.facebook-login > div {
+.facebookLogin > div {
   color: #385185;
   font-weight: 600;
   display: flex;
@@ -72,12 +63,12 @@
   margin-left: 10px;
 }
 
-.facebook-login > div > img {
+.facebookLogin > div > img {
   width: 16px;
   height: 16px;
 }
 
-.facebook-login > a {
+.facebookLogin > a {
   font-size: 12px;
 }
 
@@ -92,14 +83,26 @@
   margin: 10px 5px;
 }
 
-.image-container {
-  background-size: 454px 618px;
-  width: 454px;
-  height: 618px;
+.errors {
+  color: rgb(237, 73, 86);
+}
+
+.help {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  background-color: #edf7ed;
+  padding: 10px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
 }
 
 @media only screen and (max-width: 875px) {
-  .image-container {
+  .imageContainer {
     display: none;
   }
 } ;

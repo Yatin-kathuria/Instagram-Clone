@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./SignIn.css";
+import styles from "./SignIn.module.css";
 import { Link, useHistory } from "react-router-dom";
 import { useGlobalContext } from "../../context";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import Divider from "../../components/Divider/Divider";
+import { CircularProgress } from "@material-ui/core";
+// import CircularProgress from '@mui/material/CircularProgress';
 
 const images = [
   "/images/sideImage.jpg",
@@ -20,6 +25,7 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [text, setText] = useState("");
   const [errors, setErrors] = useState(null);
+  const [isloading, setIsloading] = useState(false);
 
   useEffect(() => {
     const timeout = setInterval(() => {
@@ -36,7 +42,7 @@ function SignIn() {
   const PostData = (e) => {
     e.preventDefault();
     setErrors(null);
-
+    setIsloading(true);
     fetch(
       `${
         process.env.NODE_ENV === "production"
@@ -66,86 +72,68 @@ function SignIn() {
           history.push("/");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setIsloading(false));
   };
 
   return (
-    <section className="signin">
+    <section className={styles.signin}>
       <div
-        className="image-container"
+        className={styles.imageContainer}
         style={{ backgroundImage: `url("/images/Phone.png")` }}
       >
-        <img src={images[position]} alt="side img" className="image-display" />
+        <img
+          src={images[position]}
+          alt="side img"
+          className={styles.imageDisplay}
+        />
       </div>
-      <article className="conatiner">
-        <div className="first">
-          <div className="first-container">
-            <h1 className="logo">Instagram</h1>
+      <article className={styles.conatiner}>
+        <div className={styles.first}>
+          <div className={styles.firstContainer}>
+            <h1 className={styles.logo}>Instagram</h1>
             <div>
               <form onSubmit={PostData}>
-                <div className="input_container">
-                  {text ? (
-                    <>
-                      <p className="input_label">
-                        Phone number, username, or email
-                      </p>
-                    </>
-                  ) : null}
-                  <input
-                    type="text"
-                    placeholder="Phone number, username, or email"
-                    className={`${
-                      text ? "input_tag input_tag_write" : "input_tag"
-                    }`}
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                  />
-                </div>
-                <div className="input_container">
-                  {password ? (
-                    <>
-                      <p className="input_label">Password</p>
-                    </>
-                  ) : null}
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className={`${
-                      password ? "input_tag input_tag_write" : "input_tag"
-                    }`}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <button
-                  className={`${!text || !password ? "btn disabled" : "btn"}`}
-                  disabled={!text || !password}
-                >
-                  Log in
-                </button>
+                <Input
+                  value={text}
+                  placeholder="Phone number, username, or email"
+                  onChange={(e) => setText(e.target.value)}
+                />
+                <Input
+                  value={password}
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                />
+                <Button
+                  disabled={!text || !password || isloading}
+                  label={
+                    isloading ? (
+                      <CircularProgress size={20} color="#0095f6" />
+                    ) : (
+                      "Log in"
+                    )
+                  }
+                />
               </form>
             </div>
-            <div className="line-group">
-              <div className="line"></div>
-              <div className="text">OR</div>
-              <div className="line"></div>
-            </div>
-            <div className="facebook-login">
+            <Divider text="OR" />
+            <div className={styles.facebookLogin}>
               <div>
                 <img src="/images/fb.png" alt="fb logo" />
                 <p>Log in with facebook</p>
               </div>
-              {errors ? <p className="errors">{errors}</p> : null}
+              {errors && <p className={styles.errors}>{errors}</p>}
               <Link to="/reset">Forget password?</Link>
             </div>
           </div>
         </div>
-        <div className="second">
+        <div className={styles.second}>
           <p>
             Dont have a account? <Link to="/signup">Sign up</Link>
           </p>
         </div>
-        <div className="third">
+        <div className={styles.third}>
           <p>Get the app.</p>
           <div>
             <a
@@ -165,6 +153,9 @@ function SignIn() {
           </div>
         </div>
       </article>
+      <div className={styles.help}>
+        Want to give a try ? Use ID : test123 and password : test
+      </div>
     </section>
   );
 }

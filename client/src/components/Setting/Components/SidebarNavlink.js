@@ -1,6 +1,6 @@
 import React from "react";
 import "./SidebarNavlink.css";
-import { Link, NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch } from "react-router-dom";
 
 function SidebarNavlink({ label, to }) {
   const { url } = useRouteMatch();

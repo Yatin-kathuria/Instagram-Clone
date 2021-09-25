@@ -1,0 +1,96 @@
+.signup {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.conatiner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 32px;
+}
+
+.first,
+.second,
+.third {
+  width: 350px;
+  margin: 10px auto;
+  background-color: #fff;
+  text-align: center;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 1px;
+  padding: 10px 10px;
+}
+
+.second a {
+  color: #0095f6 !important;
+  font-weight: 700;
+}
+
+.third {
+  border: none;
+}
+
+.third img {
+  height: 40px;
+  width: 136px;
+  margin: 10px 5px;
+}
+
+.firstContainer {
+  margin: 20px;
+}
+
+.subheading {
+  font-weight: 600 !important;
+  color: #8e8e8e;
+  margin: 15px;
+  font-size: 17px;
+}
+
+.facebook {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: white;
+  background-color: #0095f6;
+  height: 2.5rem;
+  border: 1px solid grey;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.facebook > img {
+  width: 16px;
+  height: 16px;
+}
+.facebook > span {
+  margin-left: 5px;
+}
+
+.policies {
+  color: #8e8e8e !important;
+  font-size: 12px;
+}
+
+.policies > a {
+  color: #8e8e8e !important;
+  font-weight: 600;
+}
+
+.errors {
+  color: rgb(237, 73, 86);
+}
+
+.logo {
+  font-weight: 300;
+  font-family: "Grand Hotel", cursive;
+  font-size: 3rem;
+  margin-bottom: 24px;
+}

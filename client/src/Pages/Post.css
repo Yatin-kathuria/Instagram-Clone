@@ -21,28 +21,10 @@
   position: relative;
 }
 
-.post_profile::before {
-  position: absolute;
-  content: "";
-  left: -2px;
-  width: 35px;
-  height: 35px;
-  background: linear-gradient(
-    45deg,
-    #405de6,
-    #5851db,
-    #833ab4,
-    #c13584,
-    #e1306c,
-    #fd1d1d
-  );
-  z-index: -1;
-  border-radius: 50%;
-}
-
 .post_profile_pic {
   width: 32px;
   height: 32px;
+  border: 2px solid #8a9efe;
   border-radius: 50%;
   margin-right: 14px;
 }

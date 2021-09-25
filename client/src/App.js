@@ -4,11 +4,11 @@ import { Route, Switch, useHistory } from "react-router-dom";
 import PostContainer from "./Pages/PostContainer";
 import Profile from "./Pages/Profile";
 import SignIn from "./Pages/SignIn/SignIn";
-import SignUp from "./Pages/SignUp/SignUp.jsx";
+import SignUp from "./Pages/SignUp/SignUp";
 import CreatePost from "./Pages/CreatePost";
 import { useEffect } from "react";
 import { useGlobalContext } from "./context";
-import Reset from "./Pages/Reset";
+import Reset from "./Pages/Reset/Reset";
 import NewPassword from "./Pages/NewPassword";
 import Footer from "./Pages/Footer";
 import Explore from "./Pages/Explore";
@@ -30,7 +30,7 @@ const Routing = () => {
     if (!user) {
       history.push("/signin");
     }
-  }, []);
+  }, [history, userDispatch]);
 
   return (
     <div style={{ marginTop: "80px" }}>

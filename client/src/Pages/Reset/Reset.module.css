@@ -1,4 +1,4 @@
-.Reset_first {
+.first {
   width: 350px;
   margin: 10px auto;
   background-color: #fff;
@@ -10,7 +10,7 @@
 .reset_container {
   padding: 40px;
 }
-.Reset_lock {
+.lock {
   width: 100px;
   height: 100px;
   border: 1px solid black;
@@ -18,27 +18,40 @@
   padding: 20px;
 }
 
-.Reset_title {
+.title {
   font-size: 16px;
   font-weight: 600;
   color: #262626;
 }
 
-.Reset_message {
+.message {
   color: #8e8e8e;
   font-size: 14px;
   font-weight: 400;
 }
 
-.Reset_link {
+.link {
   color: #262626;
   font-weight: 600;
 }
 
-.Reset_login_container {
+.login_container {
   border: 1px solid rgb(219, 219, 219);
   border-left: none;
   border-right: none;
   padding: 10px;
   margin-top: 30px;
+}
+
+.conatiner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 32px;
+}
+
+.backToLogin {
+  color: #262626;
+  font-weight: 600;
 }
