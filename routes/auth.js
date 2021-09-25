@@ -6,94 +6,17 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const requireLogin = require("../middleware/requireLogin");
-const nodemailer = require("nodemailer");
-const sendgridtransport = require("nodemailer-sendgrid-transport");
+const transporter = require("../utils/transporter");
+const usernameValidator = require("../utils/usernameValidator");
 
-function ValidateInputType(Text) {
-  if (
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-      Text
-    )
-  ) {
-    return { email: Text };
-  }
-  if (/^[a-zA-Z0-9]+$/.test(Text)) {
-    return { username: Text };
-  }
-}
+// controllers
+const authController = require("../controllers/auth");
 
-const transporter = nodemailer.createTransport(
-  sendgridtransport({
-    auth: {
-      api_key: process.env.SENDGRID_API,
-    },
-  })
-);
-
-router.post("/signup", (req, res) => {
-  const errors = [];
-  let { name, email, password, username } = req.body;
-  // if (!pic) {
-  //   pic =
-  //     "https://res.cloudinary.com/yatinkathuria2020/image/upload/v1609571937/bhareth-np_iawl1e.jpg";
-  // }
-  if (!email || !name || !password || !username) {
-    return res.status(422).json({
-      error: "please add all the fields",
-    });
-  }
-  // find user by username
-  User.findOne({ username })
-    .then((savedUsername) => {
-      if (savedUsername) {
-        errors.push({
-          message: "This username isn't available. Please try another.",
-        });
-      }
-      // find user by email
-      User.findOne({ email })
-        .then((savedEmail) => {
-          if (savedEmail) {
-            errors.push({ message: `Another account is using ${email}.` });
-
-            return res.status(422).json(errors);
-          } else {
-            // encrypt password
-            bcrypt.hash(password, 12).then((hashedPassword) => {
-              const user = new User({
-                name,
-                email,
-                password: hashedPassword,
-                username,
-              });
-              //saving the user
-              user
-                .save()
-                .then((user) => {
-                  transporter.sendMail({
-                    to: user.email,
-                    from: "yatinkathuria2020@gmail.com",
-                    subject: "sign up successfully",
-                    html: "<h1>Welcome to instagram</h1>",
-                  });
-                  return res.json({
-                    message: "user saved successfully",
-                    user,
-                  });
-                })
-                .catch((error) => console.log(error));
-            });
-          }
-        })
-        .catch((error) => console.log(error));
-    })
-    .catch((error) => console.log(error));
-});
+router.post("/signup", authController.signUp);
 
 router.post("/signin", (req, res) => {
   const { text, password } = req.body;
-
-  User.findOne(ValidateInputType(text))
+  User.findOne(usernameValidator(text))
     .then((user) => {
       if (!user) {
         return res.status(422).json({
