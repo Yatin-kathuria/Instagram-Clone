@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./CreatePost.css";
 import { useHistory } from "react-router-dom";
-import { useGlobalContext } from "../../context";
+import { useGlobalContext } from "../context";
 
 function CreatePost() {
   const history = useHistory();

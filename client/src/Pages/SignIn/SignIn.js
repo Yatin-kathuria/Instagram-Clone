@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./SignIn.css";
-import fb from "../../images/fb.png";
-import AppStore from "../../images/AppStore.png";
-import GooglePlay from "../../images/GooglePlay.png";
-import sideImage from "../../images/sideImage.jpg";
-import sideImage2 from "../../images/sideImage2.jpg";
-import sideImage3 from "../../images/sideImage3.jpg";
-import sideImage4 from "../../images/sideImage4.jpg";
-import sideImage5 from "../../images/sideImage5.jpg";
 import { Link, useHistory } from "react-router-dom";
 import { useGlobalContext } from "../../context";
 
-const images = [sideImage, sideImage2, sideImage3, sideImage4, sideImage5];
+const images = [
+  "/images/sideImage.jpg",
+  "/images/sideImage2.jpg",
+  "/images/sideImage3.jpg",
+  "/images/sideImage4.jpg",
+  "/images/sideImage5.jpg",
+];
 const imagesLength = images.length;
 
 function SignIn() {
@@ -73,7 +71,10 @@ function SignIn() {
 
   return (
     <section className="signin">
-      <div className="image-container">
+      <div
+        className="image-container"
+        style={{ backgroundImage: `url("/images/Phone.png")` }}
+      >
         <img src={images[position]} alt="side img" className="image-display" />
       </div>
       <article className="conatiner">
@@ -131,7 +132,7 @@ function SignIn() {
             </div>
             <div className="facebook-login">
               <div>
-                <img src={fb} alt="fb logo" />
+                <img src="/images/fb.png" alt="fb logo" />
                 <p>Log in with facebook</p>
               </div>
               {errors ? <p className="errors">{errors}</p> : null}
@@ -152,14 +153,14 @@ function SignIn() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={AppStore} alt="AppStore logo" />
+              <img src="/images/AppStore.png" alt="AppStore logo" />
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DloginPage%26ig_mid%3D7C7CF5CF-A643-4E9A-917D-C11ED2788C48%26utm_content%3Dlo%26utm_medium%3Dbadge"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={GooglePlay} alt="GooglePlay logo" />
+              <img src="../images/GooglePlay.png" alt="GooglePlay logo" />
             </a>
           </div>
         </div>

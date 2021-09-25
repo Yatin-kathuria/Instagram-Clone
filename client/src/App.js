@@ -1,20 +1,18 @@
 import "./App.css";
 import Navbar from "./components//Navbar";
 import { Route, Switch, useHistory } from "react-router-dom";
-import PostContainer from "./components/Pages/PostContainer";
-import Profile from "./components/Pages/Profile";
-import SignIn from "./components/Pages/SignIn";
-import SignUp from "./components/Pages/SignUp";
-import CreatePost from "./components/Pages/CreatePost";
+import PostContainer from "./Pages/PostContainer";
+import Profile from "./Pages/Profile";
+import SignIn from "./Pages/SignIn/SignIn";
+import SignUp from "./Pages/SignUp/SignUp.jsx";
+import CreatePost from "./Pages/CreatePost";
 import { useEffect } from "react";
 import { useGlobalContext } from "./context";
-import Reset from "./components/Pages/Reset";
-import NewPassword from "./components/Pages/NewPassword";
-import Footer from "./components/Pages/Footer";
-import Explore from "./components/Pages/Explore";
-import Settings from "./components/Pages/Settings";
-
-// import Test from "./components/Testing/Profile";
+import Reset from "./Pages/Reset";
+import NewPassword from "./Pages/NewPassword";
+import Footer from "./Pages/Footer";
+import Explore from "./Pages/Explore";
+import Settings from "./Pages/Settings";
 
 const Routing = () => {
   const history = useHistory();

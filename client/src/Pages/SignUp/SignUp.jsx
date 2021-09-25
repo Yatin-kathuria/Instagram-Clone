@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./SignUp.css";
-import fb from "../../images/fb.png";
-import AppStore from "../../images/AppStore.png";
-import GooglePlay from "../../images/GooglePlay.png";
 
 function SignUp() {
   const history = useHistory();
@@ -11,11 +8,11 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [errors, setErrors] = useState(null);
+  const [error, setError] = useState(null);
 
   const PostData = (e) => {
     e.preventDefault();
-    setErrors(null);
+    setError(null);
     fetch(
       `${
         process.env.NODE_ENV === "production"
@@ -37,10 +34,9 @@ function SignUp() {
     )
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setErrors(data);
-        }
-        if (data.user) {
+        if (data.error) {
+          setError(data.error);
+        } else if (data.user) {
           alert(data.message);
           history.push("/signin");
         }
@@ -58,7 +54,7 @@ function SignUp() {
               Sign up to see photos and videos from your friends.
             </h6>
             <button className="signup_facebook btn">
-              <img src={fb} alt="fb logo" />
+              <img src="/images/fb.png" alt="fb logo" />
               <span>Log in with facebook</span>
             </button>
             <div className="line-group">
@@ -144,7 +140,7 @@ function SignUp() {
                 </button>
               </form>
             </div>
-            <p className="errors">{errors ? errors[0].message : null}</p>
+            {error && <p className="errors">{error}</p>}
             <p className="policies">
               By signing up, you agree to our{" "}
               <a
@@ -187,14 +183,14 @@ function SignUp() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={AppStore} alt="AppStore logo" />
+              <img src="/images/AppStore.png" alt="AppStore logo" />
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DloginPage%26ig_mid%3D7C7CF5CF-A643-4E9A-917D-C11ED2788C48%26utm_content%3Dlo%26utm_medium%3Dbadge"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={GooglePlay} alt="GooglePlay logo" />
+              <img src="/images/GooglePlay.png" alt="GooglePlay logo" />
             </a>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGlobalContext } from "../../context";
+import { useGlobalContext } from "../context";
 import {
   Link,
   NavLink,
@@ -8,11 +8,11 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
-import SingalPost from "../SingalPost";
+import SingalPost from "../components/SingalPost";
 import "./Profile.css";
-import Saved from "../Profile/Saved";
-import IGTV from "../Profile/IGTV";
-import Tagged from "../Profile/Tagged";
+import Saved from "../components/Profile/Saved";
+import IGTV from "../components/Profile/IGTV";
+import Tagged from "../components/Profile/Tagged";
 
 function Profile() {
   const { path, url } = useRouteMatch();

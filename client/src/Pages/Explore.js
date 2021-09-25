@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useGlobalContext } from "../../context";
-import SingalPost from "../SingalPost";
+import { useGlobalContext } from "../context";
+import SingalPost from "../components/SingalPost";
 import "./Explore.css";
 
 function Explore() {

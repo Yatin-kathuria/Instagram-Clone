@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import M from "materialize-css";
 import "./Reset.css";
-import lock from "../../images/lock.png";
 
 function Reset() {
   const [email, setEmail] = useState("");
@@ -52,7 +51,7 @@ function Reset() {
         <div className="Reset_first">
           <div className="reset_container">
             <div className="lock_container">
-              <img src={lock} alt="lock" className="Reset_lock" />
+              <img src="/images/lock.png" alt="lock" className="Reset_lock" />
             </div>
             <h4 className="Reset_title">Trouble Logging In?</h4>
             <p className="Reset_message">

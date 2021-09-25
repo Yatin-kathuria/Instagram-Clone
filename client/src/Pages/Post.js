@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../../context";
+import { useGlobalContext } from "../context";
 import "./Post.css";
-import PostModal from "../Modals/PostModal";
-import { Comment } from "../Comment";
-import ProfileModal from "../Modals/ProfileModal";
+import PostModal from "../components/Modals/PostModal";
+import { Comment } from "../components/Comment";
+import ProfileModal from "../components/Modals/ProfileModal";
 import Moment from "react-moment";
 
 function Post({ post }) {

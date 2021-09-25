@@ -47,7 +47,7 @@ class AuthController {
       });
     } catch (error) {
       res.status(422).json({
-        errors: [error.message],
+        error: error.message,
       });
     }
   }

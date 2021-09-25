@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./PostContainer.css";
 import Post from "./Post";
-import { useGlobalContext } from "../../context";
+import { useGlobalContext } from "../context";
 
 function PostContainer() {
   const { myFollowingPostState, myFollowingPostDispatch } = useGlobalContext();

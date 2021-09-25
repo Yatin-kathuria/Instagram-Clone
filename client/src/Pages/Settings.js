@@ -1,14 +1,14 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import ChangePassword from "../Setting/ChangePassword";
-import EditProfile from "../Setting/EditProfile";
-import EmailAndSMS from "../Setting/EmailAndSMS";
-import EmailsFromInstagram from "../Setting/EmailsFromInstagram";
-import LoginActivity from "../Setting/LoginActivity";
-import ManageContacts from "../Setting/ManageContacts";
-import PrivacyAndSecurity from "../Setting/PrivacyAndSecurity";
-import PushNotification from "../Setting/PushNotification";
-import Sidebar from "../Setting/Sidebar";
+import ChangePassword from "../components/Setting/ChangePassword";
+import EditProfile from "../components/Setting/EditProfile";
+import EmailAndSMS from "../components/Setting/EmailAndSMS";
+import EmailsFromInstagram from "../components/Setting/EmailsFromInstagram";
+import LoginActivity from "../components/Setting/LoginActivity";
+import ManageContacts from "../components/Setting/ManageContacts";
+import PrivacyAndSecurity from "../components/Setting/PrivacyAndSecurity";
+import PushNotification from "../components/Setting/PushNotification";
+import Sidebar from "../components/Setting/Sidebar";
 import "./Settings.css";
 
 function Settings() {
