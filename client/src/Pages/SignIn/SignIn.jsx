@@ -6,6 +6,7 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import Divider from "../../components/Divider/Divider";
 import { CircularProgress } from "@material-ui/core";
+import { signIn } from "../../http";
 // import CircularProgress from '@mui/material/CircularProgress';
 
 const images = [
@@ -39,38 +40,20 @@ function SignIn() {
     return () => clearInterval(timeout);
   }, [position]);
 
-  const PostData = (e) => {
+  const onSignIn = async (e) => {
     e.preventDefault();
     setErrors(null);
     setIsloading(true);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/signin"
-          : "http://localhost:5000/signin"
-      }`,
-      {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password,
-          text,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setErrors(data.error);
-        } else {
-          localStorage.setItem("jwt", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          userDispatch({ type: "USER", payload: data.user });
-          alert("login successfully");
-          history.push("/");
+    signIn({ password, text })
+      .then((res) => {
+        if (res.data.error) {
+          setErrors(res.data.error);
+          return;
         }
+        localStorage.setItem("jwt", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        userDispatch({ type: "USER", payload: res.data.user });
+        history.push("/");
       })
       .catch((error) => console.log(error))
       .finally(() => setIsloading(false));
@@ -93,7 +76,7 @@ function SignIn() {
           <div className={styles.firstContainer}>
             <h1 className={styles.logo}>Instagram</h1>
             <div>
-              <form onSubmit={PostData}>
+              <form onSubmit={onSignIn}>
                 <Input
                   value={text}
                   placeholder="Phone number, username, or email"
