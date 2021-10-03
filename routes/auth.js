@@ -1,11 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
 const requireLogin = require("../middleware/requireLogin");
-const transporter = require("../utils/transporter");
 
 // controllers
 const authController = require("../controllers/auth");
