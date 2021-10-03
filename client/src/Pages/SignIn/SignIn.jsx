@@ -46,13 +46,14 @@ function SignIn() {
     setIsloading(true);
     signIn({ password, text })
       .then((res) => {
-        if (res.data.error) {
-          setErrors(res.data.error);
+        const { data } = res;
+        if (data.error) {
+          setErrors(data.error);
           return;
         }
-        localStorage.setItem("jwt", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        userDispatch({ type: "USER", payload: res.data.user });
+        localStorage.setItem("jwt", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        userDispatch({ type: "USER", payload: data.user });
         history.push("/");
       })
       .catch((error) => console.log(error))

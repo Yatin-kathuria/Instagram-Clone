@@ -4,6 +4,7 @@ import { useState } from "react";
 import DeleteModal from "./Modals/DeleteModal";
 import { useGlobalContext } from "../context";
 import { Link } from "react-router-dom";
+import { likeComment, unlikeComment } from "../http";
 
 export function Comment({ comment, deleteComment, postId }) {
   const { userState, myFollowingPostDispatch } = useGlobalContext();
@@ -15,27 +16,9 @@ export function Comment({ comment, deleteComment, postId }) {
     setCommentLiked(comment?.commentLikes.includes(userState?._id));
   }, [userState, setCommentLiked, comment]);
 
-  const likeComment = (commentId) => {
+  const handleLikeComment = (commentId) => {
     setCommentLiked(true);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/like_comment"
-          : "http://localhost:5000/like_comment"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          commentId,
-          postId,
-        }),
-      }
-    )
-      .then((res) => res.json())
+    likeComment({ commentId, postId })
       .then(async (likedComment) => {
         if (likedComment) {
           await myFollowingPostDispatch({
@@ -49,32 +32,15 @@ export function Comment({ comment, deleteComment, postId }) {
       .catch((error) => console.log(error));
   };
 
-  const unlikeComment = (commentId) => {
+  const handleUnlikeComment = (commentId) => {
     setCommentLiked(false);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/unlike_comment"
-          : "http://localhost:5000/unlike_comment"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          commentId,
-          postId,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then(async (unlikedComment) => {
-        if (unlikedComment) {
+    unlikeComment({ commentId, postId })
+      .then(async (res) => {
+        const { data } = res;
+        if (data) {
           await myFollowingPostDispatch({
             type: "LIKE_UNLIKE_COMMENT",
-            payload: { commentId, post: unlikedComment },
+            payload: { commentId, post: data },
           });
         } else {
           setCommentLiked(true);
@@ -138,7 +104,7 @@ export function Comment({ comment, deleteComment, postId }) {
         {commentLiked ? (
           <button
             className="icon_btn"
-            onClick={() => unlikeComment(comment._id)}
+            onClick={() => handleUnlikeComment(comment._id)}
           >
             <svg
               aria-label="Unlike"
@@ -152,7 +118,10 @@ export function Comment({ comment, deleteComment, postId }) {
             </svg>
           </button>
         ) : (
-          <button className="icon_btn" onClick={() => likeComment(comment._id)}>
+          <button
+            className="icon_btn"
+            onClick={() => handleLikeComment(comment._id)}
+          >
             <svg
               aria-label="Like"
               fill="#262626"
@@ -187,32 +156,15 @@ export function CommentOverModal({ comment, deleteComment, postId }) {
     setCommentLiked(comment?.commentLikes.includes(userState?._id));
   }, [userState, setCommentLiked, comment]);
 
-  const likeComment = (commentId) => {
+  const handleLikeComment = (commentId) => {
     setCommentLiked(true);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/like_comment"
-          : "http://localhost:5000/like_comment"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          commentId,
-          postId,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then(async (likedComment) => {
-        if (likedComment) {
+    likeComment({ commentId, postId })
+      .then(async (res) => {
+        const { data } = res;
+        if (data) {
           await myFollowingPostDispatch({
             type: "LIKE_UNLIKE_COMMENT",
-            payload: { commentId, post: likedComment },
+            payload: { commentId, post: data },
           });
         } else {
           setCommentLiked(false);
@@ -221,32 +173,15 @@ export function CommentOverModal({ comment, deleteComment, postId }) {
       .catch((error) => console.log(error));
   };
 
-  const unlikeComment = (commentId) => {
+  const handleUnlikeComment = (commentId) => {
     setCommentLiked(false);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/unlike_comment"
-          : "http://localhost:5000/unlike_comment"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          commentId,
-          postId,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then(async (unlikedComment) => {
-        if (unlikedComment) {
+    unlikeComment({ commentId, postId })
+      .then(async (res) => {
+        const { data } = res;
+        if (data) {
           await myFollowingPostDispatch({
             type: "LIKE_UNLIKE_COMMENT",
-            payload: { commentId, post: unlikedComment },
+            payload: { commentId, post: data },
           });
         } else {
           setCommentLiked(true);
@@ -319,7 +254,7 @@ export function CommentOverModal({ comment, deleteComment, postId }) {
           {commentLiked ? (
             <button
               className="icon_btn"
-              onClick={() => unlikeComment(comment._id)}
+              onClick={() => handleUnlikeComment(comment._id)}
             >
               <svg
                 aria-label="Unlike"
@@ -335,7 +270,7 @@ export function CommentOverModal({ comment, deleteComment, postId }) {
           ) : (
             <button
               className="icon_btn"
-              onClick={() => likeComment(comment._id)}
+              onClick={() => handleLikeComment(comment._id)}
             >
               <svg
                 aria-label="Like"

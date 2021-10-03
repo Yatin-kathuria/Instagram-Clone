@@ -6,6 +6,14 @@ import PostModal from "../components/Modals/PostModal";
 import { Comment } from "../components/Comment";
 import ProfileModal from "../components/Modals/ProfileModal";
 import Moment from "react-moment";
+import {
+  like,
+  unlike,
+  savedPost,
+  unsavedPost,
+  addComment,
+  deleteComment,
+} from "../http";
 
 function Post({ post }) {
   const { userState, myFollowingPostDispatch } = useGlobalContext();
@@ -19,36 +27,18 @@ function Post({ post }) {
   useEffect(() => {
     setSingalPost({ ...post });
     setPostLiked(post?.likes.includes(userState?._id));
-
     setPostSaved(post?.savedBy.includes(userState?._id));
   }, [post, userState]);
-  // console.log();
 
   const likePost = (id) => {
     setPostLiked(true);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/like"
-          : "http://localhost:5000/like"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((likedPost) => {
-        if (likedPost) {
+    like({ id })
+      .then((res) => {
+        const { data } = res;
+        if (data) {
           setPostLiked(true);
-          setSingalPost({ ...singalPost, likes: likedPost.likes });
-          myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: likedPost });
+          setSingalPost({ ...singalPost, likes: data.likes });
+          myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: data });
         } else {
           setPostLiked(false);
         }
@@ -58,29 +48,13 @@ function Post({ post }) {
 
   const unlikePost = (id) => {
     setPostLiked(false);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/unlike"
-          : "http://localhost:5000/unlike"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((unlikePost) => {
+    unlike({ id })
+      .then((res) => {
+        const { data } = res;
         if (unlikePost) {
           setPostLiked(false);
-          setSingalPost({ ...singalPost, likes: unlikePost.likes });
-          myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: unlikePost });
+          setSingalPost({ ...singalPost, likes: data.likes });
+          myFollowingPostDispatch({ type: "LIKE_UNLIKE", payload: data });
         } else {
           setPostLiked(true);
         }
@@ -88,39 +62,21 @@ function Post({ post }) {
       .catch((error) => console.log(error));
   };
 
-  const savedPost = (id) => {
+  const handleSavedPost = (id) => {
     setPostSaved(true);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/saved-post"
-          : "http://localhost:5000/saved-post"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        if (result) {
-          console.log(result);
-
+    savedPost({ id })
+      .then((res) => {
+        const { data } = res;
+        if (data) {
           setSingalPost({
             ...singalPost,
-            savedBy: result.savedPostResult.savedBy,
+            savedBy: data.savedPostResult.savedBy,
           });
           myFollowingPostDispatch({
             type: "UPDATE_SAVEDBY",
             payload: {
-              savedBy: result.savedPostResult.savedBy,
-              _id: result.savedPostResult._id,
+              savedBy: data.savedPostResult.savedBy,
+              _id: data.savedPostResult._id,
             },
           });
         } else {
@@ -130,37 +86,21 @@ function Post({ post }) {
       .catch((error) => console.log(error));
   };
 
-  const unsavedPost = (id) => {
+  const handleUnsavedPost = (id) => {
     setPostSaved(false);
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/unsaved-post"
-          : "http://localhost:5000/unsaved-post"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        if (result) {
+    unsavedPost({ id })
+      .then((res) => {
+        const { data } = res;
+        if (data) {
           setSingalPost({
             ...singalPost,
-            savedBy: result.savedPostResult.savedBy,
+            savedBy: data.savedPostResult.savedBy,
           });
           myFollowingPostDispatch({
             type: "UPDATE_SAVEDBY",
             payload: {
-              savedBy: result.savedPostResult.savedBy,
-              _id: result.savedPostResult._id,
+              savedBy: data.savedPostResult.savedBy,
+              _id: data.savedPostResult._id,
             },
           });
         } else {
@@ -170,54 +110,25 @@ function Post({ post }) {
       .catch((error) => console.log(error));
   };
 
-  const addComment = (e) => {
+  const handleAddComment = (e) => {
     e.preventDefault();
     setComment("");
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/comment"
-          : "http://localhost:5000/comment"
-      }`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-        body: JSON.stringify({
-          text: comment,
-          id: singalPost?._id,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        setSingalPost({ ...singalPost, comments: result.comments });
-        myFollowingPostDispatch({ type: "ADD_COMMENT", payload: result });
+    addComment({ text: comment, id: singalPost?._id })
+      .then((res) => {
+        const { data } = res;
+        setSingalPost({ ...singalPost, comments: data.comments });
+        myFollowingPostDispatch({ type: "ADD_COMMENT", payload: data });
       })
       .catch((error) => console.log(error));
   };
 
-  const deleteComment = (commentId) => {
+  const handleDeleteComment = (commentId) => {
     const postId = singalPost?._id;
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? `/deletecomment/${postId}&${commentId}`
-          : `http://localhost:5000/deletecomment/${postId}&${commentId}`
-      }`,
-      {
-        method: "delete",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        setSingalPost({ ...singalPost, comments: result.comments });
-        myFollowingPostDispatch({ type: "UPDATE_COMMENT", payload: result });
+    deleteComment(postId, commentId)
+      .then((res) => {
+        const { data } = res;
+        setSingalPost({ ...singalPost, comments: data.comments });
+        myFollowingPostDispatch({ type: "UPDATE_COMMENT", payload: data });
       })
       .catch((error) => console.log(error));
   };
@@ -347,7 +258,7 @@ function Post({ post }) {
               {postSaved ? (
                 <button
                   className="icon_btn"
-                  onClick={() => unsavedPost(singalPost?._id)}
+                  onClick={() => handleUnsavedPost(singalPost?._id)}
                 >
                   <svg
                     aria-label="Remove"
@@ -363,7 +274,7 @@ function Post({ post }) {
               ) : (
                 <button
                   className="icon_btn"
-                  onClick={() => savedPost(singalPost?._id)}
+                  onClick={() => handleSavedPost(singalPost?._id)}
                 >
                   <svg
                     aria-label="Save"
@@ -413,7 +324,7 @@ function Post({ post }) {
               <Comment
                 key={comment._id}
                 comment={comment}
-                deleteComment={deleteComment}
+                deleteComment={handleDeleteComment}
                 postId={singalPost?._id}
               />
             ))}
@@ -423,7 +334,7 @@ function Post({ post }) {
           </div>
         </div>
         <footer className="post_footer">
-          <form onSubmit={addComment}>
+          <form onSubmit={handleAddComment}>
             <textarea
               type="text"
               value={comment}
@@ -453,9 +364,9 @@ function Post({ post }) {
             likePost={likePost}
             unlikePost={unlikePost}
             postSaved={postSaved}
-            savedPost={savedPost}
-            unsavedPost={unsavedPost}
-            deleteComment={deleteComment}
+            savedPost={handleSavedPost}
+            unsavedPost={handleUnsavedPost}
+            deleteComment={handleDeleteComment}
           />
         ) : null}
         {profileModalOpen ? (

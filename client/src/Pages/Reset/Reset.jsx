@@ -5,6 +5,7 @@ import styles from "./Reset.module.css";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import Divider from "../../components/Divider/Divider";
+import { resetPassword } from "../../http";
 
 function Reset() {
   const [email, setEmail] = useState("");
@@ -13,26 +14,11 @@ function Reset() {
   const { url } = useRouteMatch();
 
   const ResetPassword = (e) => {
-    setError(null);
     e.preventDefault();
-    fetch(
-      `${
-        process.env.NODE_ENV === "production"
-          ? "/resetpassword"
-          : "http://localhost:5000/resetpassword"
-      }`,
-      {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
+    setError(null);
+    resetPassword({ email })
+      .then((res) => {
+        const { data } = res;
         if ("error" in data) {
           setError(data.error);
           M.toast({ html: data.error, classes: "red darken-3" });
