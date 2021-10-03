@@ -97,7 +97,6 @@ class AuthController {
       const user = await User.findOne({ email: req.body.email });
       if (!user) {
         throw new Error("user don't exists with that email");
-        return;
       }
       user.resetToken = token;
       user.expireToken = Date.now() + 3600000;
@@ -112,6 +111,59 @@ class AuthController {
       });
 
       res.json({ message: "check your email" });
+    } catch (error) {
+      res.status(422).json({ error: error.message });
+    }
+  }
+
+  async newPassword(req, res) {
+    try {
+      const { password, token } = req.body;
+      const user = await User.findOne({
+        resetToken: token,
+        expireToken: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        throw new Error("try again session expired");
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+      user.password = hashedPassword;
+      user.resetToken = undefined;
+      user.expireToken = undefined;
+      await user.save();
+
+      res.json({ message: "password updated successfully" });
+    } catch (error) {
+      res.status(422).json({ error: error.message });
+    }
+  }
+
+  async changePassword(req, res) {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      const saveduser = await User.findById({ _id: req.user._id });
+      if (!saveduser) {
+        throw new Error("Technical error try again after sometime");
+      }
+
+      const match = await bcrypt.compare(oldPassword, saveduser.password);
+      if (!match) {
+        throw new Error(
+          "Sorry, old password is incorrect. Please double-check your password."
+        );
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+      saveduser.password = hashedPassword;
+
+      const user = await saveduser.save();
+      if (!user) {
+        throw new Error("some technical error");
+      }
+
+      res.json({ message: "password updated successfully" });
     } catch (error) {
       res.status(422).json({ error: error.message });
     }
