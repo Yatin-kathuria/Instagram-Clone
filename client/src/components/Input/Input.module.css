@@ -1,8 +1,8 @@
 .inputWrapper {
-  border: 1px solid #dbdbdb !important;
-  height: 38px !important;
-  margin-bottom: 10px !important;
-  border-radius: 4px !important;
+  border: 1px solid #dbdbdb;
+  height: 38px;
+  margin-bottom: 10px;
+  border-radius: 4px;
 }
 
 .inputLabel {
