@@ -3,7 +3,7 @@ import styles from "./Input.module.css";
 
 const Input = ({ value, placeholder, onChange, type }) => {
   return (
-    <div className={styles.inputContainer}>
+    <div className={styles.inputWrapper}>
       {value && <p className={styles.inputLabel}>{placeholder}</p>}
       <input
         type={type}
