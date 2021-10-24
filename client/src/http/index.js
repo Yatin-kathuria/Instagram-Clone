@@ -5,8 +5,13 @@ const api = axios.create({
   headers: {
     "Content-type": "application/json",
     Accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
   },
+});
+
+api.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("jwt");
+  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  return config;
 });
 
 // List of all the endpoints
