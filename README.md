@@ -1,4 +1,6 @@
-# Instagram Clone
+# Instagram Clone 
+[Demo]
+
 ## Tech
 
 Instagram Clone is build from these Technologies:
@@ -16,3 +18,4 @@ Instagram Clone is build from these Technologies:
    [MongoDb]: <https://www.mongodb.com/>
    [node.js]: <http://nodejs.org>
    [Express]: <http://expressjs.com>
+   [Demo]: <https://instagram-clone24.herokuapp.com>
